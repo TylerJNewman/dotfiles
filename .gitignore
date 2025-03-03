@@ -1,0 +1,4 @@
+.DS_Store
+*.log
+zsh/secrets/env.zsh
+zsh/local.zsh

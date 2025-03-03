@@ -1,0 +1,32 @@
+# Main zshrc file - sources all components
+
+# Load Oh-My-Zsh
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
+
+# Load configs
+for config_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/configs/*.zsh; do
+  source $config_file
+done
+
+# Load aliases
+for alias_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/aliases/*.zsh; do
+  source $alias_file
+done
+
+# Load functions
+for function_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/functions/*.zsh; do
+  source $function_file
+done
+
+# Load secrets (not tracked by git)
+if [[ -f ${ZDOTDIR:-$HOME}/dotfiles/zsh/secrets/env.zsh ]]; then
+  source ${ZDOTDIR:-$HOME}/dotfiles/zsh/secrets/env.zsh
+fi
+
+# Load local overrides (not tracked by git)
+if [[ -f ${ZDOTDIR:-$HOME}/dotfiles/zsh/local.zsh ]]; then
+  source ${ZDOTDIR:-$HOME}/dotfiles/zsh/local.zsh
+fi
