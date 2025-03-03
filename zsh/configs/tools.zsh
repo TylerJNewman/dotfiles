@@ -13,6 +13,11 @@ eval "$(zoxide init --cmd cd zsh)"
 # GitHub Copilot
 eval "$(gh copilot alias -- zsh)"
 
+# Atuin - Enhanced shell history
+if command -v atuin &> /dev/null; then
+  eval "$(atuin init zsh)"
+fi
+
 # Bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 

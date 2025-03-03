@@ -39,6 +39,7 @@ dotfiles/
 │   ├── gitconfig         # Git settings
 │   └── gitignore_global  # Global gitignore patterns
 ├── vim/                  # Vim configuration
+├── Brewfile              # Homebrew dependencies
 ├── install.sh            # Installation script
 └── README.md             # This file
 ```
@@ -51,6 +52,13 @@ cd ~/dotfiles
 ./install.sh
 ```
 
+The installation script will:
+1. Install Homebrew (if not already installed)
+2. Install dependencies from the Brewfile
+3. Set up Oh-My-Zsh plugins
+4. Install Starship, Atuin, and other tools
+5. Create symlinks for configuration files
+
 ## Features
 
 ### ZSH Plugins
@@ -62,6 +70,7 @@ This configuration includes several powerful ZSH plugins to enhance your termina
 | **git** | Git integration and shortcuts |
 | **zsh-autosuggestions** | Fish-like autosuggestions based on command history |
 | **zsh-syntax-highlighting** | Syntax highlighting for commands as you type |
+| **zsh-abbr** | Abbreviation expansion for frequently used commands |
 | **node** | Node.js version and environment management |
 | **npm** | NPM completions and shortcuts |
 | **yarn** | Yarn completions and shortcuts |
@@ -71,6 +80,27 @@ This configuration includes several powerful ZSH plugins to enhance your termina
 | **docker-compose** | Docker Compose completions |
 | **fzf** | Fuzzy finder integration |
 | **vscode** | VS Code integration |
+
+### Terminal Enhancements
+
+| Tool | Description |
+|------|-------------|
+| **Starship** | Modern, fast, cross-shell prompt with minimal configuration |
+| **Atuin** | Magical shell history that synchronizes across machines and provides advanced search |
+| **zoxide** | Smarter cd command that remembers your most used directories |
+| **fzf** | General-purpose fuzzy finder for files, history, and more |
+
+#### Starship Configuration
+
+A custom Starship configuration is included in this repository. The configuration provides:
+
+- Clean, informative prompt with git status indicators
+- Programming language version indicators (Node.js, Python, Rust)
+- Docker context awareness
+- Command execution duration tracking
+- Time display in prompt
+
+The configuration is automatically installed to `~/.config/starship.toml` during setup. You can customize it further by editing this file directly.
 
 ### Package Manager Aliases
 
@@ -85,6 +115,23 @@ The configuration includes consistent aliases across different JavaScript packag
 | `nrb` | `yab` | `pbuild` | `bbuild` | Run build script |
 | `nrs` | `yas` | `pstart` | `bstart` | Run start script |
 | `nrt` | `yat` | `ptest` | `btest` | Run test script |
+
+### Homebrew Bundle
+
+The included Brewfile manages all dependencies and applications through Homebrew. It includes:
+
+- **Shell tools**: zsh, fzf, zoxide, starship, atuin, etc.
+- **Development tools**: git, node, yarn, pnpm, bun, python, etc.
+- **Fonts**: Fira Code, JetBrains Mono, Hack Nerd Font
+- **Applications**: VS Code, iTerm2, Rectangle, Alfred
+
+To install or update all dependencies:
+
+```bash
+brew bundle
+```
+
+To add a new dependency, edit the Brewfile and run the command above.
 
 ## Best Practices for Maintaining This Repository
 
@@ -143,12 +190,16 @@ Consider these automation opportunities:
 ## External Dependencies
 
 - [Oh-My-Zsh](https://ohmyz.sh/)
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k)
+- [Starship](https://starship.rs/)
+- [Atuin](https://github.com/ellie/atuin)
+- [zsh-abbr](https://github.com/olets/zsh-abbr)
+  - Requires [zsh-job-queue](https://github.com/olets/zsh-job-queue) (installed automatically as a git submodule)
 - [fzf](https://github.com/junegunn/fzf)
 - [zoxide](https://github.com/ajeetdsouza/zoxide)
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+- [Homebrew](https://brew.sh/)
 
 ## Next Steps
 
@@ -156,12 +207,13 @@ Here are some recommended enhancements to further improve your development envir
 
 ### 1. Terminal Productivity Enhancements
 
-- **Add [Starship](https://starship.rs/) support**: A fast, customizable cross-shell prompt
+- **Customize Starship**: Edit the provided `~/.config/starship.toml` configuration to match your preferences
   ```bash
-  # Add to install.sh
-  curl -sS https://starship.rs/install.sh | sh
-  # Add to zsh/configs/theme.zsh as an alternative to Powerlevel10k
-  # eval "$(starship init zsh)"
+  # Edit the Starship configuration
+  nano ~/.config/starship.toml
+  
+  # Test changes immediately
+  source ~/.zshrc
   ```
 
 - **Integrate [atuin](https://github.com/ellie/atuin)**: Enhanced shell history with search, sync, and statistics
@@ -170,13 +222,6 @@ Here are some recommended enhancements to further improve your development envir
   bash <(curl https://raw.githubusercontent.com/ellie/atuin/main/install.sh)
   # Add to zsh/configs/tools.zsh
   # eval "$(atuin init zsh)"
-  ```
-
-- **Add [zsh-abbr](https://github.com/olets/zsh-abbr)**: Abbreviation expansion for frequently used commands
-  ```bash
-  # Add to install.sh
-  git clone https://github.com/olets/zsh-abbr ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-abbr
-  # Add to plugins list in zsh/zshrc
   ```
 
 ### 2. Development Workflow Improvements
@@ -224,5 +269,9 @@ Here are some recommended enhancements to further improve your development envir
 
 ## Version History
 
-- **2025-03-03**: Initial repository setup
-- **2025-03-03**: Added ZSH plugins and package manager configurations
+- **v1.0.0** (2023-10-01): Initial setup with basic ZSH configuration
+- **v1.1.0** (2023-11-15): Added custom plugins for PNPM and Bun
+- **v1.2.0** (2023-12-20): Integrated Homebrew bundle and improved documentation
+- **v1.3.0** (2024-01-10): Switched from Powerlevel10k to Starship prompt
+- **v1.3.1** (2024-01-15): Added custom Starship configuration file
+- **v1.3.2** (2024-03-03): Fixed zsh-abbr installation to properly initialize git submodules

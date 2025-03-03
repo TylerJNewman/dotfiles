@@ -2,11 +2,12 @@
 
 # Load Oh-My-Zsh
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# Theme is set in zsh/configs/theme.zsh
 plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
+  zsh-abbr
   node
   npm
   yarn

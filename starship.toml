@@ -1,0 +1,101 @@
+# Starship Configuration
+# See https://starship.rs/config/ for more options
+
+# General settings
+add_newline = true
+command_timeout = 1000
+
+# Replace the "❯" symbol with "→" for the prompt
+[character]
+success_symbol = "[→](bold green)"
+error_symbol = "[→](bold red)"
+vimcmd_symbol = "[←](bold green)"
+
+# Shows the username
+[username]
+style_user = "blue bold"
+style_root = "red bold"
+format = "[$user]($style) "
+disabled = false
+show_always = false
+
+# Shows the hostname
+[hostname]
+ssh_only = true
+format = "on [$hostname](bold yellow) "
+disabled = false
+
+# Shows current directory
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = "~"
+read_only_style = "red"
+read_only = " 🔒"
+format = "in [$path]($style)[$read_only]($read_only_style) "
+
+# Shows current git branch
+[git_branch]
+symbol = "🌱 "
+truncation_length = 20
+truncation_symbol = "…"
+format = "via [$symbol$branch]($style) "
+style = "bold green"
+
+# Shows git status
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold red"
+conflicted = "🏳"
+ahead = "🏎💨"
+behind = "😰"
+diverged = "😵"
+untracked = "🤷"
+stashed = "📦"
+modified = "📝"
+staged = '[++\($count\)](green)'
+renamed = "👅"
+deleted = "🗑"
+
+# Shows Node.js version
+[nodejs]
+format = "via [⬢ $version](bold green) "
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+# Shows Python version
+[python]
+symbol = "🐍 "
+pyenv_version_name = true
+detect_files = ["requirements.txt", "pyproject.toml", "Pipfile", ".python-version"]
+detect_folders = [".venv", "venv"]
+format = "via [$symbol$version]($style) "
+style = "bold green"
+
+# Shows Rust version
+[rust]
+symbol = "🦀 "
+format = "via [$symbol$version]($style) "
+style = "bold red"
+
+# Shows Docker context
+[docker_context]
+symbol = "🐳 "
+format = "via [$symbol$context]($style) "
+style = "blue bold"
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+detect_folders = []
+disabled = false
+
+# Shows time
+[time]
+disabled = false
+format = '[\[ $time \]]($style) '
+time_format = "%T"
+style = "bright-black"
+
+# Shows command duration
+[cmd_duration]
+min_time = 2000
+format = "took [$duration](bold yellow) " 

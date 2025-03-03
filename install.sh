@@ -8,6 +8,36 @@ NC='\033[0m' # No Color
 # Create dotfiles directory if it doesn't exist
 mkdir -p $HOME/dotfiles
 
+# Install Homebrew if not already installed
+if ! command -v brew &> /dev/null; then
+  echo -e "${BLUE}Installing Homebrew...${NC}"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  
+  # Add Homebrew to PATH based on platform
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    if [[ "$(uname -m)" == "arm64" ]]; then
+      # Apple Silicon
+      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+      # Intel
+      echo 'eval "$(/usr/local/bin/brew shellenv)"' >> $HOME/.zprofile
+      eval "$(/usr/local/bin/brew shellenv)"
+    fi
+  else
+    # Linux
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
+fi
+
+# Install dependencies from Brewfile
+if command -v brew &> /dev/null; then
+  echo -e "${BLUE}Installing dependencies from Brewfile...${NC}"
+  brew bundle
+fi
+
 # Install custom Oh-My-Zsh plugins
 echo -e "${BLUE}Installing custom Oh-My-Zsh plugins...${NC}"
 
@@ -24,6 +54,36 @@ fi
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
   echo -e "${BLUE}Installing zsh-syntax-highlighting...${NC}"
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+fi
+
+# Install zsh-abbr
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-abbr" ]; then
+  echo -e "${BLUE}Installing zsh-abbr...${NC}"
+  git clone https://github.com/olets/zsh-abbr ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-abbr
+  echo -e "${BLUE}Initializing zsh-abbr submodules...${NC}"
+  cd ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-abbr && git submodule init && git submodule update
+  cd - > /dev/null
+fi
+
+# Install Starship prompt if not already installed
+if ! command -v starship &> /dev/null; then
+  echo -e "${BLUE}Installing Starship prompt...${NC}"
+  curl -sS https://starship.rs/install.sh | sh
+fi
+
+# Create Starship config directory if it doesn't exist
+echo -e "${BLUE}Setting up Starship configuration...${NC}"
+mkdir -p "$HOME/.config"
+
+# Copy Starship configuration file
+echo -e "${BLUE}Copying Starship configuration...${NC}"
+cp $HOME/dotfiles/starship.toml $HOME/.config/starship.toml
+echo -e "${GREEN}Starship configuration installed!${NC}"
+
+# Install Atuin shell history if not already installed
+if ! command -v atuin &> /dev/null; then
+  echo -e "${BLUE}Installing Atuin shell history...${NC}"
+  bash <(curl https://raw.githubusercontent.com/ellie/atuin/main/install.sh)
 fi
 
 # Create PNPM plugin if it doesn't exist
