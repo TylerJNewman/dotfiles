@@ -27,10 +27,10 @@ export PIPX_BIN_DIR=$HOME/.local/bin
 export PATH="$PIPX_BIN_DIR:$PATH"
 export PATH="$PIPX_HOME/completions:$PATH"
 
-# NVM
+# NVM - Now using lazy loading in nvm-lazy.zsh
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Python aliases
 alias python=python3
