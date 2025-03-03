@@ -12,3 +12,4 @@ alias flushdns="sudo dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
 alias dont_index_node_modules='find . -type d -name "node_modules" -exec touch "{}/.metadata_never_index" \;'
 alias check-nodemon="ps aux | rg -i '.bin/nodemon'"
 alias fz="ls | fzf | xargs code"
+alias prompt="$HOME/dotfiles/bin/prompt-switch.sh"

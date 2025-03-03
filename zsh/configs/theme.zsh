@@ -3,6 +3,10 @@
 # Using Starship prompt - a modern, fast cross-shell prompt
 ZSH_THEME=""
 
+# Disable Oh-My-Zsh prompt completely
+PROMPT=""
+RPROMPT=""
+
 # Initialize Starship if installed
 if command -v starship &> /dev/null; then
   eval "$(starship init zsh)"

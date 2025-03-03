@@ -1,5 +1,8 @@
 # PATH configurations
 
+# Dotfiles bin directory
+export PATH="$HOME/dotfiles/bin:$PATH"
+
 # Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 

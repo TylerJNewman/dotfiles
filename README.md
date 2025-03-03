@@ -94,11 +94,10 @@ This configuration includes several powerful ZSH plugins to enhance your termina
 
 A custom Starship configuration is included in this repository. The configuration provides:
 
-- Clean, informative prompt with git status indicators
-- Programming language version indicators (Node.js, Python, Rust)
-- Docker context awareness
-- Command execution duration tracking
-- Time display in prompt
+- Ultra-minimal prompt showing only the current directory and prompt character
+- Clean, distraction-free terminal experience
+- Git branch and status information when in a git repository
+- Customizable prompt character that changes color based on last command status
 
 The configuration is automatically installed to `~/.config/starship.toml` during setup. You can customize it further by editing this file directly.
 
@@ -275,3 +274,4 @@ Here are some recommended enhancements to further improve your development envir
 - **v1.3.0** (2024-01-10): Switched from Powerlevel10k to Starship prompt
 - **v1.3.1** (2024-01-15): Added custom Starship configuration file
 - **v1.3.2** (2024-03-03): Fixed zsh-abbr installation to properly initialize git submodules
+- **v1.3.3** (2024-03-03): Updated Starship configuration to use an ultra-minimal prompt
