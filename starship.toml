@@ -1,48 +1,110 @@
-# Starship Configuration - Ultra Minimal
+# Starship Configuration - Enhanced Setup
 # See https://starship.rs/config/ for more options
 
-# General settings
+# Use a single line prompt
 add_newline = false
 
-# Format the prompt to be extremely minimal
-# This completely replaces the default prompt
-format = "$character"
+# Enhanced format with essential modules
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$shell\
+$character"""
 
-# Replace the "❯" symbol with "→" for the prompt
-[character]
-success_symbol = "[→](bold green)"
-error_symbol = "[→](bold red)"
-
-# Disable everything else
-[username]
-disabled = true
-
-[hostname]
-disabled = true
-
+# Directory configuration - improved
 [directory]
-disabled = true
+truncation_length = 5  # Increased from 3 to 5 for better context
+truncate_to_repo = true
+style = "blue bold"
+home_symbol = "~"  # Clear home symbol
+read_only = " 󰌾"  # Nerd Font lock symbol for read-only directories
 
+# Git branch configuration - more concise
 [git_branch]
-disabled = true
+format = "[$symbol$branch]($style) "
+style = "purple bold"
+symbol = " 󰘬 "  # Nerd Font git symbol instead of "git:"
 
+# Git status - simplified symbols
 [git_status]
-disabled = true
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "red bold"
+conflicted = "="
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
+stashed = "S"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
 
+# Command duration - now included in format
+[cmd_duration]
+min_time = 2000  # Only show for commands that take more than 2 seconds
+format = "took [$duration]($style) "
+style = "yellow"
+
+# Character prompt
+[character]
+success_symbol = "[❯](green bold)"
+error_symbol = "[❯](red bold)"
+
+# Shell configuration - now included in format
+[shell]
+disabled = false
+format = "[$indicator]($style) "
+bash_indicator = "bash"
+zsh_indicator = "zsh"
+fish_indicator = "fish"
+powershell_indicator = "pwsh"
+unknown_indicator = "shell"
+style = "cyan bold"
+
+# Time module
+[time]
+disabled = false
+format = '[$time]($style) '
+time_format = "%H:%M:%S"
+style = "bold yellow"
+
+# Language and environment modules
 [nodejs]
-disabled = true
+format = "[$symbol$version](green bold) "
+symbol = " 󰎙 "
+detect_extensions = ["js", "jsx", "ts", "tsx", "mjs", "cjs"]
 
 [python]
-disabled = true
+format = "[$symbol$version]($style) "
+symbol = " 󰌠 "
+style = "yellow bold"
 
 [rust]
-disabled = true
+format = "[$symbol$version]($style) "
+symbol = " 󱘗 "
+style = "red bold"
 
 [docker_context]
-disabled = true
+symbol = " 󰡨 "
 
-[time]
-disabled = true
+[package]
+symbol = " 󰏗 "
 
-[cmd_duration]
-disabled = true 
+# Performance optimization
+command_timeout = 500
+
+# Optional Powerline-style segments
+# Uncomment these if you want to use Powerline style
+# (requires proper font support)
+# [aws]
+# format = 'on [$symbol$profile(\($region\))]($style) '
+# style = "bold blue"
+# symbol = "󰸏 "
+
+# [kubernetes]
+# format = 'on [󱃾 $context\($namespace\)]($style) '
+# style = "bold purple" 

@@ -2,6 +2,32 @@
 
 A thoughtfully organized collection of my development environment configuration files.
 
+## Quick Start Guide
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+
+# Run the installation script
+cd ~/dotfiles
+./install.sh
+
+# Restart your terminal or source your zshrc
+source ~/.zshrc
+```
+
+> **Note**: This setup requires a [Nerd Font](https://www.nerdfonts.com/) for proper symbol display in the terminal. The installation script will install Hack Nerd Font, but you'll need to configure your terminal to use it.
+
+### Recommended Versions
+
+| Tool | Minimum Version |
+|------|-----------------|
+| Starship | 1.16.0+ |
+| Zsh | 5.8+ |
+| Node.js | 18.0.0+ |
+| Git | 2.30.0+ |
+| Homebrew | 4.0.0+ |
+
 ## Guiding Principles
 
 1. **Modularity First**: Keep configurations separate and focused on specific tools.
@@ -53,11 +79,29 @@ cd ~/dotfiles
 ```
 
 The installation script will:
-1. Install Homebrew (if not already installed)
-2. Install dependencies from the Brewfile
-3. Set up Oh-My-Zsh plugins
-4. Install Starship, Atuin, and other tools
-5. Create symlinks for configuration files
+1. Create a backup of existing dotfiles
+2. Install Homebrew (if not already installed)
+3. Install dependencies from the Brewfile
+4. Install Oh-My-Zsh (if not already installed)
+5. Set up Oh-My-Zsh plugins
+6. Install Starship, Atuin, and other tools
+7. Create symlinks for configuration files
+8. Verify tool versions and Nerd Font installation
+
+### Updating
+
+To update your dotfiles and all dependencies:
+
+```bash
+cd ~/dotfiles
+./install.sh update
+```
+
+This will:
+1. Pull the latest changes from the repository
+2. Update Homebrew dependencies
+3. Update Oh-My-Zsh plugins
+4. Update Starship to the latest version
 
 ## Features
 
@@ -94,12 +138,28 @@ This configuration includes several powerful ZSH plugins to enhance your termina
 
 A custom Starship configuration is included in this repository. The configuration provides:
 
-- Ultra-minimal prompt showing only the current directory and prompt character
-- Clean, distraction-free terminal experience
-- Git branch and status information when in a git repository
+- Enhanced prompt showing directory, git information, and command duration
+- Git branch and status information with Nerd Font symbols
+- Shell indicator showing which shell you're using
+- Command duration for long-running commands
 - Customizable prompt character that changes color based on last command status
+- Improved directory display with better truncation settings
 
 The configuration is automatically installed to `~/.config/starship.toml` during setup. You can customize it further by editing this file directly.
+
+```toml
+# Example of the current Starship configuration
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$shell\
+$character"""
+```
+
+> **Note**: This configuration requires a Nerd Font to display special symbols correctly. The installation script installs Hack Nerd Font, but you'll need to configure your terminal to use it.
 
 ### Package Manager Aliases
 
@@ -271,7 +331,60 @@ Here are some recommended enhancements to further improve your development envir
 - **v1.0.0** (2023-10-01): Initial setup with basic ZSH configuration
 - **v1.1.0** (2023-11-15): Added custom plugins for PNPM and Bun
 - **v1.2.0** (2023-12-20): Integrated Homebrew bundle and improved documentation
-- **v1.3.0** (2024-01-10): Switched from Powerlevel10k to Starship prompt
 - **v1.3.1** (2024-01-15): Added custom Starship configuration file
 - **v1.3.2** (2024-03-03): Fixed zsh-abbr installation to properly initialize git submodules
 - **v1.3.3** (2024-03-03): Updated Starship configuration to use an ultra-minimal prompt
+- **v1.4.0** (2024-06-01): Enhanced Starship configuration with Nerd Font symbols and improved format
+- **v1.4.1** (2024-06-01): Added version checks and Nerd Font verification to installation script
+
+## Troubleshooting
+
+### Common Issues
+
+#### Missing Nerd Font Symbols
+
+If you see boxes, question marks, or missing symbols in your prompt:
+
+1. Verify a Nerd Font is installed:
+   ```bash
+   ls ~/Library/Fonts/*Nerd* || ls /Library/Fonts/*Nerd*
+   ```
+
+2. Configure your terminal to use the Nerd Font:
+   - **iTerm2**: Preferences → Profiles → Text → Font → Change Font
+   - **VS Code**: Settings → Terminal › Integrated: Font Family → Add a Nerd Font (e.g., "Hack Nerd Font")
+
+#### Slow Shell Startup
+
+If your shell is starting slowly:
+
+1. Profile your startup time:
+   ```bash
+   time zsh -i -c exit
+   ```
+
+2. Identify slow plugins or configurations:
+   ```bash
+   # Add to top of .zshrc
+   zmodload zsh/zprof
+   
+   # Add to bottom of .zshrc
+   zprof
+   ```
+
+3. Consider lazy-loading rarely used tools or disabling unused plugins
+
+#### Tool Version Mismatches
+
+If you see version warnings during installation:
+
+1. Update the specific tool:
+   ```bash
+   # For Homebrew packages
+   brew upgrade [package-name]
+   
+   # For Starship
+   curl -sS https://starship.rs/install.sh | sh
+   ```
+
+2. If you can't update, check if your configuration is compatible with your current version

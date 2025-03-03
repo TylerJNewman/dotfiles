@@ -3,10 +3,165 @@
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Create dotfiles directory if it doesn't exist
 mkdir -p $HOME/dotfiles
+
+# Function to create a backup of the dotfiles
+create_backup() {
+  echo -e "${BLUE}Creating backup of existing dotfiles...${NC}"
+  BACKUP_DIR="$HOME/dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
+  
+  # Check if there's anything to backup
+  if [ -d "$HOME/dotfiles" ] && [ "$(ls -A $HOME/dotfiles)" ]; then
+    mkdir -p "$BACKUP_DIR"
+    cp -R "$HOME/dotfiles/"* "$BACKUP_DIR/"
+    echo -e "${GREEN}Backup created at $BACKUP_DIR${NC}"
+  else
+    echo -e "${YELLOW}No existing dotfiles to backup.${NC}"
+  fi
+}
+
+# Function to check if Nerd Font is installed
+check_nerd_font() {
+  echo -e "${BLUE}Checking for Nerd Font installation...${NC}"
+  
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS font check
+    if ls ~/Library/Fonts/*Nerd* 1> /dev/null 2>&1 || ls /Library/Fonts/*Nerd* 1> /dev/null 2>&1; then
+      echo -e "${GREEN}Nerd Font detected!${NC}"
+      return 0
+    fi
+  else
+    # Linux font check
+    if ls ~/.local/share/fonts/*Nerd* 1> /dev/null 2>&1 || ls /usr/share/fonts/*Nerd* 1> /dev/null 2>&1; then
+      echo -e "${GREEN}Nerd Font detected!${NC}"
+      return 0
+    fi
+  fi
+  
+  echo -e "${YELLOW}Warning: No Nerd Font detected.${NC}"
+  echo -e "${YELLOW}Your Starship prompt requires a Nerd Font to display special symbols correctly.${NC}"
+  echo -e "${YELLOW}We will install Hack Nerd Font via Homebrew, but you'll need to configure your terminal to use it.${NC}"
+  echo -e "${YELLOW}After installation, set your terminal font to 'Hack Nerd Font' or any other Nerd Font.${NC}"
+  return 1
+}
+
+# Function to check versions of key tools
+check_tool_versions() {
+  echo -e "${BLUE}Checking versions of key tools...${NC}"
+  
+  # Check Starship version
+  if command -v starship &> /dev/null; then
+    STARSHIP_VERSION=$(starship --version | cut -d ' ' -f 2)
+    STARSHIP_MIN_VERSION="1.16.0"
+    if [ "$(printf '%s\n' "$STARSHIP_MIN_VERSION" "$STARSHIP_VERSION" | sort -V | head -n1)" != "$STARSHIP_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: Starship version $STARSHIP_VERSION is below recommended version $STARSHIP_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}Starship version $STARSHIP_VERSION ✓${NC}"
+    fi
+  fi
+  
+  # Check Zsh version
+  if command -v zsh &> /dev/null; then
+    ZSH_VERSION=$(zsh --version | cut -d ' ' -f 2)
+    ZSH_MIN_VERSION="5.8"
+    if [ "$(printf '%s\n' "$ZSH_MIN_VERSION" "$ZSH_VERSION" | sort -V | head -n1)" != "$ZSH_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: Zsh version $ZSH_VERSION is below recommended version $ZSH_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}Zsh version $ZSH_VERSION ✓${NC}"
+    fi
+  fi
+  
+  # Check Git version
+  if command -v git &> /dev/null; then
+    GIT_VERSION=$(git --version | cut -d ' ' -f 3)
+    GIT_MIN_VERSION="2.30.0"
+    if [ "$(printf '%s\n' "$GIT_MIN_VERSION" "$GIT_VERSION" | sort -V | head -n1)" != "$GIT_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: Git version $GIT_VERSION is below recommended version $GIT_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}Git version $GIT_VERSION ✓${NC}"
+    fi
+  fi
+  
+  # Check Node.js version
+  if command -v node &> /dev/null; then
+    NODE_VERSION=$(node --version | cut -c 2-)
+    NODE_MIN_VERSION="18.0.0"
+    if [ "$(printf '%s\n' "$NODE_MIN_VERSION" "$NODE_VERSION" | sort -V | head -n1)" != "$NODE_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: Node.js version $NODE_VERSION is below recommended version $NODE_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}Node.js version $NODE_VERSION ✓${NC}"
+    fi
+  fi
+  
+  # Check Homebrew version
+  if command -v brew &> /dev/null; then
+    BREW_VERSION=$(brew --version | head -n 1 | cut -d ' ' -f 2)
+    BREW_MIN_VERSION="4.0.0"
+    if [ "$(printf '%s\n' "$BREW_MIN_VERSION" "$BREW_VERSION" | sort -V | head -n1)" != "$BREW_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: Homebrew version $BREW_VERSION is below recommended version $BREW_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}Homebrew version $BREW_VERSION ✓${NC}"
+    fi
+  fi
+}
+
+# Function to update dotfiles
+update_dotfiles() {
+  echo -e "${BLUE}Updating dotfiles repository...${NC}"
+  
+  # Check if we're in a git repository
+  if [ -d "$HOME/dotfiles/.git" ]; then
+    cd "$HOME/dotfiles"
+    
+    # Stash any local changes
+    git stash
+    
+    # Pull latest changes
+    git pull origin main || git pull origin master
+    
+    # Apply stashed changes if any
+    git stash pop 2>/dev/null
+    
+    echo -e "${GREEN}Dotfiles updated!${NC}"
+    
+    # Update dependencies
+    if command -v brew &> /dev/null; then
+      echo -e "${BLUE}Updating Homebrew dependencies...${NC}"
+      brew bundle
+    fi
+    
+    # Update Oh-My-Zsh plugins
+    echo -e "${BLUE}Updating Oh-My-Zsh plugins...${NC}"
+    cd "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" && git pull
+    cd "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" && git pull
+    cd "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-abbr" && git pull && git submodule update
+    cd "$HOME/dotfiles"
+    
+    # Update Starship
+    if command -v starship &> /dev/null; then
+      echo -e "${BLUE}Updating Starship...${NC}"
+      curl -sS https://starship.rs/install.sh | sh
+    fi
+    
+    echo -e "${GREEN}All dependencies updated!${NC}"
+  else
+    echo -e "${RED}Not a git repository. Cannot update.${NC}"
+  fi
+}
+
+# Check if this is an update
+if [ "$1" = "update" ]; then
+  update_dotfiles
+  exit 0
+fi
+
+# Create backup of existing dotfiles
+create_backup
 
 # Install Homebrew if not already installed
 if ! command -v brew &> /dev/null; then
@@ -36,10 +191,22 @@ fi
 if command -v brew &> /dev/null; then
   echo -e "${BLUE}Installing dependencies from Brewfile...${NC}"
   brew bundle
+  
+  # Check for Nerd Font after Brewfile installation
+  check_nerd_font
 fi
 
 # Install custom Oh-My-Zsh plugins
 echo -e "${BLUE}Installing custom Oh-My-Zsh plugins...${NC}"
+
+# Check if Oh-My-Zsh is installed
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo -e "${BLUE}Oh-My-Zsh not found. Installing...${NC}"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  echo -e "${GREEN}Oh-My-Zsh installed!${NC}"
+else
+  echo -e "${GREEN}Oh-My-Zsh already installed.${NC}"
+fi
 
 # Create custom plugins directory if it doesn't exist
 mkdir -p "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
@@ -79,6 +246,10 @@ mkdir -p "$HOME/.config"
 echo -e "${BLUE}Copying Starship configuration...${NC}"
 cp $HOME/dotfiles/starship.toml $HOME/.config/starship.toml
 echo -e "${GREEN}Starship configuration installed!${NC}"
+
+# Remind about Nerd Font requirement
+echo -e "${YELLOW}Remember: Starship configuration uses Nerd Font symbols.${NC}"
+echo -e "${YELLOW}Make sure your terminal is configured to use a Nerd Font (e.g., Hack Nerd Font).${NC}"
 
 # Install Atuin shell history if not already installed
 if ! command -v atuin &> /dev/null; then
@@ -164,5 +335,8 @@ if [ ! -f "$HOME/dotfiles/zsh/secrets/env.zsh" ]; then
   cp $HOME/dotfiles/zsh/secrets/env.zsh.example $HOME/dotfiles/zsh/secrets/env.zsh
   echo -e "${GREEN}Created secrets file. Remember to update with your actual API keys!${NC}"
 fi
+
+# Check versions of key tools
+check_tool_versions
 
 echo -e "${GREEN}Dotfiles installation complete!${NC}"
