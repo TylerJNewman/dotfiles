@@ -242,10 +242,10 @@ fi
 echo -e "${BLUE}Setting up Starship configuration...${NC}"
 mkdir -p "$HOME/.config"
 
-# Copy Starship configuration file
-echo -e "${BLUE}Copying Starship configuration...${NC}"
-cp $HOME/dotfiles/starship.toml $HOME/.config/starship.toml
-echo -e "${GREEN}Starship configuration installed!${NC}"
+# Create symlink for Starship configuration file
+echo -e "${BLUE}Creating symlink for Starship configuration...${NC}"
+ln -sf $HOME/dotfiles/starship.toml $HOME/.config/starship.toml
+echo -e "${GREEN}Starship configuration linked!${NC}"
 
 # Remind about Nerd Font requirement
 echo -e "${YELLOW}Remember: Starship configuration uses Nerd Font symbols.${NC}"

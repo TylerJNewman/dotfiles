@@ -94,31 +94,32 @@ zsh
 
 ## Git Status Symbols
 
+The Git status section of your prompt shows the state of your repository with these minimal symbols:
+
 | Symbol | Meaning | Description |
 |--------|---------|-------------|
 | `+` | Staged changes | You have changes staged for commit |
 | `!` | Modified files | You have unstaged modified files |
 | `?` | Untracked files | You have new files not yet tracked by git |
-| `✘` | Deleted files | You have deleted files in your working directory |
-| `⇡` | Ahead of remote | Your local branch is ahead of the remote (needs push) |
-| `⇣` | Behind remote | Your local branch is behind the remote (needs pull) |
-| `⇕` | Diverged | Your branch has diverged from the remote (needs merge/rebase) |
-| `»` | Renamed files | You have renamed files in your working directory |
+| `x` | Deleted files | You have deleted files in your working directory |
+| `↑` | Ahead of remote | Your local branch is ahead of the remote (needs push) |
+| `↓` | Behind remote | Your local branch is behind the remote (needs pull) |
+| `↕` | Diverged | Your branch has diverged from the remote (needs merge/rebase) |
+| `r` | Renamed files | You have renamed files in your working directory |
 | `=` | Conflicted files | You have merge conflicts that need resolution |
-| `S` | Stashed changes | You have changes saved in git stash |
+| `s` | Stashed changes | You have changes saved in git stash |
 
 ## Common Scenarios
 
 ### 1. Clean Repository
 
 ```
-~/projects/my-repo 󰘬 main
-zsh ❯
+~/projects/my-repo master >
 ```
 
 This indicates:
 - You're in the `~/projects/my-repo` directory
-- You're on the `main` branch
+- You're on the `master` branch
 - The repository is clean (no changes)
 - You're using the `zsh` shell
 - The previous command succeeded (green prompt character)
@@ -126,20 +127,17 @@ This indicates:
 ### 2. Working on Changes
 
 ```
-~/projects/my-repo 󰘬 feature/new-feature [!?]
-zsh ❯
+~/projects/my-repo master ! >
 ```
 
 This indicates:
-- You're on the `feature/new-feature` branch
+- You're on the `master` branch
 - You have unstaged modifications (`!`)
-- You have untracked files (`?`)
 
 ### 3. Ready to Commit
 
 ```
-~/projects/my-repo 󰘬 feature/new-feature [+]
-zsh ❯
+~/projects/my-repo master + >
 ```
 
 This indicates:
@@ -148,20 +146,16 @@ This indicates:
 ### 4. Need to Sync with Remote
 
 ```
-~/projects/my-repo 󰘬 main [⇡3⇣2]
-zsh ❯
+~/projects/my-repo master ↑ >
 ```
 
 This indicates:
-- Your branch is 3 commits ahead of the remote (`⇡3`)
-- Your branch is 2 commits behind the remote (`⇣2`)
-- You should consider pushing your changes and pulling from the remote
+- Your branch is ahead of the remote (`↑`)
 
 ### 5. Merge Conflict
 
 ```
-~/projects/my-repo 󰘬 main [=!]
-zsh ❯
+~/projects/my-repo master =! >
 ```
 
 This indicates:
@@ -171,77 +165,79 @@ This indicates:
 ### 6. After a Failed Command
 
 ```
-~/projects/my-repo 󰘬 main
+~/projects/my-repo master
 zsh ❯ git push
-fatal: The current branch main has no upstream branch.
-~/projects/my-repo 󰘬 main
+fatal: The current branch master has no upstream branch.
+~/projects/my-repo master
 zsh ❯
 ```
 
 Note that the prompt character is now red, indicating the previous command failed.
 
+### 7. Complex State (Multiple Indicators)
+
+```
+~/projects/my-repo feature/new-feature +!↑? >
+```
+
+This indicates:
+- You're on the `feature/new-feature` branch
+- You have staged changes (`+`)
+- You have unstaged modifications (`!`)
+- You have commits that need to be pushed (`↑`)
+- You have untracked files (`?`)
+
 ## Customization
 
-To modify your Starship prompt, edit `~/.config/starship.toml`. Here are some common customizations:
-
-### Change Colors
+To modify your Starship prompt, edit `~/.config/starship.toml`. Here's the current minimal configuration:
 
 ```toml
-[directory]
-style = "cyan bold"    # Change directory color
+# Use a single line prompt
+add_newline = false
 
-[git_branch]
-style = "green bold"   # Change branch color
-
-[git_status]
-style = "yellow bold"  # Change git status color
-```
-
-### Change Symbols
-
-```toml
-[git_branch]
-symbol = "🌿 "         # Use a different branch symbol
-
-[character]
-success_symbol = "[➜](bold green)"  # Different success symbol
-error_symbol = "[✗](bold red)"      # Different error symbol
-
-[git_status]
-ahead = "↑"            # Different ahead symbol
-behind = "↓"           # Different behind symbol
-```
-
-### Adjust Directory Display
-
-```toml
-[directory]
-truncation_length = 3  # Show fewer directory levels
-truncate_to_repo = false  # Don't truncate to the repo root
-```
-
-### Add More Modules
-
-To add more modules to your prompt, modify the `format` string in your `starship.toml`:
-
-```toml
+# Minimal format with essential modules
 format = """
-$username\
-$hostname\
 $directory\
 $git_branch\
 $git_status\
-$nodejs\
-$python\
-$cmd_duration\
-$line_break\
-$shell\
 $character"""
+
+# Directory configuration
+[directory]
+truncation_length = 5
+truncate_to_repo = true
+style = "blue bold"
+home_symbol = "~"
+read_only = " 󰌾"
+
+# Git branch configuration - minimal
+[git_branch]
+format = "[$branch]($style) "
+style = "purple"
+symbol = ""
+
+# Git status - simplified and minimal
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "yellow"
+conflicted = "="
+ahead = "↑"
+behind = "↓"
+diverged = "↕"
+untracked = "?"
+stashed = "s"
+modified = "!"
+staged = "+"
+renamed = "r"
+deleted = "x"
+
+# Character prompt - minimal
+[character]
+success_symbol = "[>](green)"
+error_symbol = "[>](red)"
 ```
 
-This adds:
-- Username and hostname display
-- Node.js and Python version indicators when in relevant projects
+This configuration provides a clean, minimal prompt that still shows all the essential information you need.
 
 ## Troubleshooting
 

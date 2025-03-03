@@ -4,14 +4,11 @@
 # Use a single line prompt
 add_newline = false
 
-# Enhanced format with essential modules
+# Minimal format with essential modules
 format = """
 $directory\
 $git_branch\
 $git_status\
-$cmd_duration\
-$line_break\
-$shell\
 $character"""
 
 # Directory configuration - improved
@@ -22,26 +19,26 @@ style = "blue bold"
 home_symbol = "~"  # Clear home symbol
 read_only = " 󰌾"  # Nerd Font lock symbol for read-only directories
 
-# Git branch configuration - more concise
+# Git branch configuration - minimal
 [git_branch]
-format = "[$symbol$branch]($style) "
-style = "purple bold"
-symbol = " 󰘬 "  # Nerd Font git symbol instead of "git:"
+format = "[$branch]($style) "
+style = "purple"
+symbol = ""
 
-# Git status - simplified symbols
+# Git status - simplified and minimal
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-style = "red bold"
+format = '([$all_status$ahead_behind]($style) )'
+style = "yellow"
 conflicted = "="
-ahead = "⇡"
-behind = "⇣"
-diverged = "⇕"
+ahead = "↑"
+behind = "↓"
+diverged = "↕"
 untracked = "?"
-stashed = "S"
+stashed = "s"
 modified = "!"
 staged = "+"
-renamed = "»"
-deleted = "✘"
+renamed = "r"
+deleted = "x"
 
 # Command duration - now included in format
 [cmd_duration]
@@ -49,10 +46,10 @@ min_time = 2000  # Only show for commands that take more than 2 seconds
 format = "took [$duration]($style) "
 style = "yellow"
 
-# Character prompt
+# Character prompt - minimal
 [character]
-success_symbol = "[❯](green bold)"
-error_symbol = "[❯](red bold)"
+success_symbol = "[>](green)"
+error_symbol = "[>](red)"
 
 # Shell configuration - now included in format
 [shell]

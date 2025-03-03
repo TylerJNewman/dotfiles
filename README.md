@@ -171,6 +171,26 @@ $character"""
 
 > **Detailed Documentation**: For a comprehensive guide on using and customizing Starship, see [docs/guides/starship-guide.md](docs/guides/starship-guide.md)
 
+###### Git Status Symbols
+```
+[+!⇡✘]
+```
+
+These symbols show the state of your git repository:
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| `+N` | Staged changes | You have N changes staged for commit |
+| `!N` | Modified files | You have N unstaged modified files |
+| `?N` | Untracked files | You have N new files not yet tracked by git |
+| `✘N` | Deleted files | You have N deleted files in your working directory |
+| `⇡N` | Ahead of remote | Your local branch is N commits ahead of the remote (needs push) |
+| `⇣N` | Behind remote | Your local branch is N commits behind the remote (needs pull) |
+| `⇕N` | Diverged | Your branch has diverged N commits from the remote (needs merge/rebase) |
+| `»N` | Renamed files | You have N renamed files in your working directory |
+| `=N` | Conflicted files | You have N merge conflicts that need resolution |
+| `SN` | Stashed changes | You have N changes saved in git stash |
+
 ## External Dependencies
 
 - [Oh-My-Zsh](https://ohmyz.sh/)
