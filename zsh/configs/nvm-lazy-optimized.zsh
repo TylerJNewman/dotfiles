@@ -10,7 +10,7 @@ lazy_load() {
   
   for cmd in "${tool_commands[@]}"; do
     eval "function $cmd() {
-      unfunction ${(j: :)tool_commands} 2>/dev/null
+      unfunction ${(j: :)tool_commands}
       echo \"🔄 Loading $tool_name...\"
       $load_command
       $cmd \"\$@\"
@@ -21,7 +21,7 @@ lazy_load() {
 # Define nvm as a function instead of loading it immediately
 nvm() {
   # Remove the nvm function
-  unfunction nvm 2>/dev/null
+  unfunction nvm
   
   # Load NVM
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

@@ -131,7 +131,6 @@ This configuration includes several powerful ZSH plugins to enhance your termina
 | **docker** | Docker command completions |
 | **docker-compose** | Docker Compose completions |
 | **fzf** | Fuzzy finder integration |
-| **vscode** | VS Code integration |
 
 ### Terminal Enhancements
 
@@ -333,3 +332,49 @@ If you see version warnings during installation:
    ```
 
 2. If you can't update, check if your configuration is compatible with your current version
+
+## Performance Optimizations
+
+This dotfiles repository includes several performance optimizations to improve shell startup time:
+
+### Lazy Loading
+
+Many tools are lazy loaded, meaning they are only initialized when actually needed. This significantly improves shell startup time. The following tools are lazy loaded:
+
+- **NVM (Node Version Manager)** - Only loaded when Node.js commands are used
+- **Zoxide** - Only loaded when directory jumping commands are used
+- **GitHub Copilot** - Only loaded when Copilot commands are used
+- **Atuin** - Only loaded when history commands are used
+- **Google Cloud SDK** - Only loaded when gcloud commands are used
+- **Deno** - Only loaded when Deno commands are used
+- **Bun** - Only loaded when Bun commands are used
+- **FZF** - Only loaded when fuzzy finding is used
+- **Docker** - Only loaded when Docker commands are used
+- **Docker Compose** - Only loaded when Docker Compose commands are used
+
+See `zsh/configs/lazy-tools.zsh` and `zsh/configs/nvm-lazy.zsh` for implementation details.
+
+### Fast Syntax Highlighting
+
+This configuration uses `fast-syntax-highlighting` instead of the standard `zsh-syntax-highlighting` for significantly improved performance:
+
+- Up to 50x faster than standard syntax highlighting
+- More advanced highlighting features
+- Reduced impact on shell startup time
+- Better performance during interactive use
+
+To install fast-syntax-highlighting, run:
+
+```bash
+./bin/install-fast-syntax-highlighting.sh
+```
+
+### Performance Measurement
+
+The repository includes tools to measure and optimize shell performance:
+
+- `zsh-time` - Measures shell startup time
+- `zsh-profile` - Profiles zsh startup using zprof
+- `zsh-debug` - Toggles debug mode for shell startup
+
+These commands are available after sourcing `zsh/functions/performance.zsh`.

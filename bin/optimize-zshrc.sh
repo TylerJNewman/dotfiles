@@ -6,7 +6,7 @@
 cp ~/.zshrc ~/.zshrc.bak
 
 # Define the plugins to keep
-KEEP_PLUGINS="git zsh-autosuggestions zsh-syntax-highlighting zsh-abbr docker docker-compose fzf vscode"
+KEEP_PLUGINS="git zsh-autosuggestions zsh-syntax-highlighting zsh-abbr docker docker-compose fzf"
 
 # Read the current plugins line
 CURRENT_PLUGINS=$(grep -E "^plugins=\(" ~/.zshrc | head -1)

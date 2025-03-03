@@ -13,13 +13,13 @@ export PATH="$PNPM_HOME:$PATH"
 # Homebrew
 export PATH="/opt/homebrew/bin:$PATH"
 
-# Deno
-export DENO_INSTALL="$HOME/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
+# Deno - Now lazy loaded in lazy-tools.zsh
+# export DENO_INSTALL="$HOME/.deno"
+# export PATH="$DENO_INSTALL/bin:$PATH"
 
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Bun - Now lazy loaded in lazy-tools.zsh
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Pipx
 export PIPX_HOME=$HOME/.pipx
