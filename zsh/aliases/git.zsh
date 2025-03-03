@@ -8,3 +8,5 @@ alias gd="git diff"
 alias ga="git add ."
 dif() { git diff --color --no-index "$1" "$2" | diff-so-fancy; }
 cdiff() { code --diff "$1" "$2"; }
+# Add git=hub alias if hub is installed
+alias git=hub
