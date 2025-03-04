@@ -175,7 +175,10 @@ function setRandomEmoji() {
 # Set a new random emoji for the prompt
 function newRandomEmoji() {
   PROMPT_EMOJI=$(setRandomEmoji)
-  echo "New emoji set: $PROMPT_EMOJI"
+  # Only show output if verbose flag is passed
+  if [[ "$1" == "--verbose" ]]; then
+    echo "New emoji set: $PROMPT_EMOJI"
+  fi
 }
 
 # Initialize the prompt emoji if not already set

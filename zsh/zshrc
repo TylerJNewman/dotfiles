@@ -3,9 +3,6 @@
 # Main zshrc file
 # Inspired by Kent C. Dodds' dotfiles
 
-# Start measuring shell startup time
-shell_start_time=$(date +%s.%N)
-
 # Path to dotfiles
 DOTFILES="$HOME/dotfiles"
 
@@ -93,12 +90,5 @@ fi
 # Load local configuration if available
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-# Print shell startup time
-if [[ -n "$shell_start_time" ]]; then
-  shell_end_time=$(date +%s.%N)
-  shell_elapsed=$(echo "$shell_end_time - $shell_start_time" | bc)
-  echo "Shell startup time: ${shell_elapsed}s"
-fi
-
-# Set a random emoji for the prompt
-newRandomEmoji 
+# Set a random emoji for the prompt (silently)
+PROMPT_EMOJI=$(setRandomEmoji) 
