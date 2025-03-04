@@ -1,0 +1,50 @@
+# Configuration file for ripgrep
+# Inspired by Kent C. Dodds' dotfiles
+
+# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
+--max-columns=150
+--max-columns-preview
+
+# Add my 'web' type.
+--type-add=web:*.{html,css,js,ts,jsx,tsx,json}
+
+# Add 'config' type.
+--type-add=config:*.{toml,yaml,yml,json,xml}
+
+# Using glob patterns to include/exclude files or folders
+--glob=!.git/*
+--glob=!node_modules/*
+--glob=!yarn.lock
+--glob=!package-lock.json
+--glob=!pnpm-lock.yaml
+--glob=!.next/*
+--glob=!dist/*
+--glob=!build/*
+--glob=!coverage/*
+
+# Set the colors.
+--colors=line:none
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:fg:black
+--colors=match:bg:yellow
+--colors=match:style:nobold
+
+# Because who cares about case!?
+--smart-case
+
+# Show context around matches
+--context=3
+
+# Follow symlinks
+--follow
+
+# Show line numbers
+--line-number
+
+# Don't respect ignore files (.gitignore, .ignore, etc.)
+# --no-ignore
+
+# Searches case insensitively if the pattern is all lowercase
+--smart-case 

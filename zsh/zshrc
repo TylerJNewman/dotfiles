@@ -1,43 +1,104 @@
-# Main zshrc file - sources all components
-# This version uses zinit instead of Oh-My-Zsh for better performance
+#!/usr/bin/env zsh
 
-# Load zinit setup
-if [[ -f ${ZDOTDIR:-$HOME}/dotfiles/zsh/configs/zinit-setup.zsh ]]; then
-  source ${ZDOTDIR:-$HOME}/dotfiles/zsh/configs/zinit-setup.zsh
+# Main zshrc file
+# Inspired by Kent C. Dodds' dotfiles
+
+# Start measuring shell startup time
+shell_start_time=$(date +%s.%N)
+
+# Path to dotfiles
+DOTFILES="$HOME/dotfiles"
+
+# Set up CDPATH for easier navigation
+CDPATH=.:$HOME:$HOME/projects:$HOME/Desktop
+
+# Set up PATH
+export PATH="$HOME/bin:$DOTFILES/bin:$PATH"
+
+# Set default editor
+export EDITOR='vim'
+export VISUAL='vim'
+
+# Set ripgrep config file
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+# History configuration
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_REDUCE_BLANKS
+
+# Set up Zinit if available
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -d $ZINIT_HOME ]]; then
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-# Load configs
-for config_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/configs/*.zsh; do
-  # Skip zinit-setup.zsh as it's already loaded
-  if [[ "$config_file" != *"zinit-setup.zsh"* ]]; then
-    source $config_file
-  fi
-done
+source "${ZINIT_HOME}/zinit.zsh"
 
-# Load aliases
-for alias_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/aliases/*.zsh; do
-  source $alias_file
-done
+# Load plugins with Zinit
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-completions
 
-# Load functions
-for function_file in ${ZDOTDIR:-$HOME}/dotfiles/zsh/functions/*.zsh; do
-  source $function_file
-done
+# Source custom files
+source "$DOTFILES/zsh/functions.zsh"
+source "$DOTFILES/zsh/aliases.zsh"
+source "$DOTFILES/zsh/prompt.zsh"
 
-# Load secrets (not tracked by git)
-if [[ -f ${ZDOTDIR:-$HOME}/dotfiles/zsh/secrets/env.zsh ]]; then
-  source ${ZDOTDIR:-$HOME}/dotfiles/zsh/secrets/env.zsh
+# Load completions
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# Set up key bindings
+bindkey -e  # Use emacs key bindings
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# Load nvm if available
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Load pyenv if available
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
 fi
 
-# Load local overrides (not tracked by git)
-if [[ -f ${ZDOTDIR:-$HOME}/dotfiles/zsh/local.zsh ]]; then
-  source ${ZDOTDIR:-$HOME}/dotfiles/zsh/local.zsh
+# Load rbenv if available
+if command -v rbenv 1>/dev/null 2>&1; then
+  eval "$(rbenv init -)"
 fi
 
-# Load local zshrc overrides (not tracked by git)
-if [[ -f $HOME/.zshrc.local ]]; then
-  source $HOME/.zshrc.local
+# Load direnv if available
+if command -v direnv 1>/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
 fi
 
-# Initialize Starship prompt
-eval "$(starship init zsh)" 
+# Load local configuration if available
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# Print shell startup time
+if [[ -n "$shell_start_time" ]]; then
+  shell_end_time=$(date +%s.%N)
+  shell_elapsed=$(echo "$shell_end_time - $shell_start_time" | bc)
+  echo "Shell startup time: ${shell_elapsed}s"
+fi
+
+# Set a random emoji for the prompt
+newRandomEmoji 

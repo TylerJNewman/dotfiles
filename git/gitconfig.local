@@ -1,0 +1,8 @@
+# Local Git configuration with personal information
+# This file is included by the main gitconfig
+
+[user]
+	name = Tyler Newman
+	email = tylerjnewman18@gmail.com
+
+# You can add other personal configurations here that you don't want to commit to your dotfiles repository 
