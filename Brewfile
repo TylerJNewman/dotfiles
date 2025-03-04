@@ -19,7 +19,7 @@ brew "gh"
 brew "hub"
 brew "ripgrep"
 brew "bat"
-brew "exa"
+brew "eza"
 brew "fd"
 
 # Development tools

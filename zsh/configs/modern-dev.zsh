@@ -2,17 +2,61 @@
 
 # Rust-based CLI replacements
 if command -v bat &> /dev/null; then
+  # Enhanced bat configuration
+  export BAT_THEME="Dracula"
+  export BAT_STYLE="plain"
+  
+  # Basic bat aliases
   alias cat="bat --style=plain"
   alias cath="bat --style=header,grid"
+  alias catp="bat --style=plain --paging=never"
+  alias catl="bat --style=numbers,grid"
+  
+  # Use bat for man pages with syntax highlighting
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  
+  # Use bat for help pages
+  alias bathelp='bat --plain --language=help'
+  help() {
+    "$@" --help 2>&1 | bathelp
+  }
+  
+  # Preview files with bat in fzf
+  export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 fi
 
-if command -v exa &> /dev/null; then
-  alias ls="exa"
-  alias l="exa -la"
-  alias ll="exa -l"
+# First try eza (maintained fork of exa), then fall back to exa if available
+if command -v eza &> /dev/null; then
+  # Enhanced eza configuration with icons and git integration
+  alias ls="eza --group-directories-first"
+  alias l="eza -la --group-directories-first --icons"
+  alias ll="eza -l --group-directories-first --icons"
+  alias la="eza -a --group-directories-first --icons"
+  alias lt="eza -T --level=2 --icons"
+  alias llt="eza -lT --level=3 --icons"
+  alias lg="eza -la --group-directories-first --git --icons"
+  alias llg="eza -l --group-directories-first --git --icons"
+  
+  # Sort by various attributes
+  alias lss="eza -la --sort=size --icons"
+  alias lsm="eza -la --sort=modified --icons"
+  
+  # Grid view
+  alias lsg="eza -a --grid --icons"
+elif command -v exa &> /dev/null; then
+  # Fall back to exa if eza is not available
+  alias ls="exa --group-directories-first"
+  alias l="exa -la --group-directories-first"
+  alias ll="exa -l --group-directories-first"
+  alias la="exa -a --group-directories-first"
   alias lt="exa -la --tree --level=2"
   alias llt="exa -la --tree --level=3"
+else
+  # Fall back to standard ls with colors if neither eza nor exa is available
+  alias ls="ls -G"  # Colorized output on macOS
+  alias l="ls -la"
+  alias ll="ls -l"
+  alias la="ls -a"
 fi
 
 if command -v fd &> /dev/null; then

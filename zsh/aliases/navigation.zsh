@@ -1,18 +1,16 @@
 # Navigation and file management aliases
-alias l="ls -la"
-alias ll="ls -1a"
-alias la="ls -a"
-alias lla="ls -la"
-alias lt="ls -ltra"
-alias ls="ls -G"  # Colorized output on macOS
+# Note: ls aliases are now managed in modern-dev.zsh with bat/eza support
+
+# Directory navigation
 alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias ..l="cd ../ && ll"
-alias llt='ls -lt --color=auto -h'
 alias de="cd ~/Desktop"
 alias d="cd ~/code"
+
+# macOS specific
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 alias deleteDSFiles="find . -name '.DS_Store' -type f -delete"
