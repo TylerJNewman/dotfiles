@@ -223,6 +223,12 @@ if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlightin
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
+# Install zsh-history-substring-search
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search" ]; then
+  echo -e "${BLUE}Installing zsh-history-substring-search...${NC}"
+  git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+fi
+
 # Install zsh-abbr
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-abbr" ]; then
   echo -e "${BLUE}Installing zsh-abbr...${NC}"
@@ -338,5 +344,21 @@ fi
 
 # Check versions of key tools
 check_tool_versions
+
+# Set up Cursor as the default editor if available
+echo -e "${BLUE}Setting up editor preferences...${NC}"
+if command -v cursor &> /dev/null; then
+  echo -e "${GREEN}Cursor found. Setting as default editor...${NC}"
+  git config --global core.editor "cursor --wait"
+elif [ -d "/Applications/Cursor.app" ] && [ -f "/Applications/Cursor.app/Contents/MacOS/Cursor" ]; then
+  echo -e "${YELLOW}Cursor found in Applications but not in PATH. Creating symlink...${NC}"
+  sudo ln -sf "/Applications/Cursor.app/Contents/MacOS/Cursor" /usr/local/bin/cursor
+  git config --global core.editor "cursor --wait"
+  echo -e "${GREEN}Cursor set as default editor.${NC}"
+else
+  echo -e "${YELLOW}Cursor not found. Using vim as default editor.${NC}"
+  echo -e "${YELLOW}To use Cursor, install it from https://cursor.sh/ and run:${NC}"
+  echo -e "${YELLOW}  git config --global core.editor \"cursor --wait\"${NC}"
+fi
 
 echo -e "${GREEN}Dotfiles installation complete!${NC}"
