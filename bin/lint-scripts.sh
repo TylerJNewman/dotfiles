@@ -4,6 +4,12 @@
 # Purpose: Lints shell scripts in the repository for errors and style issues
 # Dependencies: shellcheck, shfmt
 # Last updated: 2024-03-05
+# Author: Tyler Newman
+# Usage: ./bin/lint-scripts.sh
+# Description: This script finds all shell scripts in the repository and runs
+#              shellcheck and shfmt on them to ensure they follow best practices
+#              and consistent formatting. It's designed to be run before committing
+#              changes to ensure code quality.
 
 set -e
 

@@ -31,22 +31,21 @@
 - Use descriptive names that indicate the purpose of the file
 - Prefix temporary files with `_tmp_` and add to `.gitignore`
 - Follow this recommended structure for dotfiles organization:
-
-```
-~/dotfiles/
-├── zsh/
-│   ├── aliases.zsh      # All aliases
-│   ├── functions.zsh    # Custom functions
-│   ├── exports.zsh      # Environment variables
-│   ├── completion.zsh   # Tab completion settings
-│   ├── prompt.zsh       # Prompt configuration
-│   └── plugins.zsh      # Plugin management
-├── git/
-│   └── gitconfig        # Git configuration
-├── scripts/             # Utility scripts
-├── install.sh           # Installation script
-└── README.md            # Documentation
-```
+  ```
+  ~/dotfiles/
+  ├── zsh/
+  │   ├── aliases.zsh      # All aliases
+  │   ├── functions.zsh    # Custom functions
+  │   ├── exports.zsh      # Environment variables
+  │   ├── completion.zsh   # Tab completion settings
+  │   ├── prompt.zsh       # Prompt configuration
+  │   └── plugins.zsh      # Plugin management
+  ├── git/
+  │   └── gitconfig        # Git configuration
+  ├── scripts/             # Utility scripts
+  ├── install.sh           # Installation script
+  └── README.md            # Documentation
+  ```
 
 ## 4. Script Structure
 
@@ -60,14 +59,13 @@
   3. Use consistent naming conventions
   4. Include relevant environment variable checks
 
-Example module header:
-
-```zsh
-# File: aliases.zsh
-# Purpose: Contains all shell aliases grouped by functionality
-# Dependencies: None
-# Last updated: YYYY-MM-DD
-```
+  Example module header:
+  ```zsh
+  # File: aliases.zsh
+  # Purpose: Contains all shell aliases grouped by functionality
+  # Dependencies: None
+  # Last updated: YYYY-MM-DD
+  ```
 
 ## 5. Git Practices
 
@@ -151,20 +149,3 @@ Each component should be documented with:
 - Set up Cursor to respect `.gitignore` for search results
 - Install recommended extensions for shell script linting
 - Use shellcheck integration when editing shell scripts
-
-## Automation
-
-Consider adding these aliases to your shell for quick cleanup:
-
-```bash
-# Check shell script syntax
-alias check-scripts="find . -name '*.sh' -type f -exec bash -n {} \;"
-
-# Make all scripts executable
-alias fix-perms="find . -name '*.sh' -type f -exec chmod +x {} \;"
-
-# Remove temporary files
-alias clean-temp="find . -name '_tmp_*' -type f -delete"
-```
-
-By following these guidelines, we can maintain a clean, organized, and consistent dotfiles repository that is easy to understand and maintain. 

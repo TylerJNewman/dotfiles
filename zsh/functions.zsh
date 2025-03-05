@@ -1,7 +1,16 @@
 #!/usr/bin/env zsh
+#
+# File: functions.zsh
+# Purpose: Contains all shell functions grouped by functionality
+# Dependencies: None
+# Last updated: 2024-03-05
+# Author: Tyler Newman
+# Description: This file contains custom shell functions for various tasks
+#              including directory navigation, development workflows, and
+#              system utilities. Functions are organized by category.
 
-# Custom shell functions
-# Inspired by Kent C. Dodds' dotfiles
+# Directory Navigation Functions
+# ------------------------------
 
 # Create a new directory and enter it
 function mkd() {

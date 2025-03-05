@@ -12,6 +12,9 @@ git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 
+# Install git hooks (optional but recommended)
+./bin/install-git-hooks.sh
+
 # Restart your terminal or source your zshrc
 source ~/.zshrc
 ```
@@ -378,3 +381,42 @@ The repository includes tools to measure and optimize shell performance:
 - `zsh-debug` - Toggles debug mode for shell startup
 
 These commands are available after sourcing `zsh/functions/performance.zsh`.
+
+## Utility Scripts
+
+This repository includes several utility scripts to help you maintain and optimize your dotfiles:
+
+### Shell Optimization
+
+- `bin/measure-startup-time.sh`: Measures your shell startup time and provides optimization recommendations
+- `bin/optimize-shell.sh`: Automatically applies optimizations to improve shell startup time
+- `bin/test-lazy-loading.sh`: Tests the impact of lazy loading on shell startup time
+
+### Development Tools
+
+- `bin/lint-scripts.sh`: Lints shell scripts for errors and style issues using shellcheck and shfmt
+- `bin/install-git-hooks.sh`: Installs git hooks for the repository
+- `bin/install-modern-tools.sh`: Installs modern replacements for common command-line tools
+- `bin/switch-to-zinit.sh`: Migrates from Oh My Zsh to Zinit for faster shell startup
+
+## Maintenance
+
+To ensure your dotfiles remain well-maintained:
+
+1. Run `bin/measure-startup-time.sh` periodically to check shell performance
+2. Use `bin/lint-scripts.sh` before committing changes to ensure code quality
+3. Keep your tools updated with `brew upgrade` regularly
+4. Review and clean up unused aliases and functions periodically
+5. Run `bin/cleanup.sh` before committing to perform all maintenance tasks automatically
+
+### Cleanup Script
+
+The `bin/cleanup.sh` script automates the cleanup process by:
+
+- Removing temporary files (*.swp, *~, _tmp_*)
+- Ensuring all scripts have proper executable permissions
+- Verifying configuration files are properly formatted
+- Running linting tools to check for issues
+- Measuring shell startup time
+
+Run it before committing changes to ensure your dotfiles repository remains clean and well-maintained.

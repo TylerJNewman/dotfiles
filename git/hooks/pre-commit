@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# File: pre-commit
+# Purpose: Git pre-commit hook to ensure code quality
+# Dependencies: lint-scripts.sh
+# Last updated: 2024-03-05
+# Author: Tyler Newman
+
+# Get the root directory of the git repository
+ROOT_DIR=$(git rev-parse --show-toplevel)
+
+# Run the lint-scripts.sh script
+echo "Running shell script linting..."
+"$ROOT_DIR/bin/lint-scripts.sh"
+
+# Exit with the status of the lint-scripts.sh script
+exit $? 
