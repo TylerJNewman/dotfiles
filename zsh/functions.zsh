@@ -13,6 +13,11 @@ function mg() {
   mkdir -p "$@" && cd "$@" || return
 }
 
+# Create a directory and cd into it (Oh My Zsh style)
+function take() {
+  mkdir -p "$@" && cd "$@" || return
+}
+
 # Change directory and list contents
 function cdl() {
   cd "$@" && ls -la
