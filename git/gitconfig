@@ -21,6 +21,8 @@
 	untrackedCache = true
 	# Use delta for better diff output if available
 	pager = delta
+	# Use Cursor as the editor with wait flag
+	editor = cursor --wait
 
 [init]
 	defaultBranch = main

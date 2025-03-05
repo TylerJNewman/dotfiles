@@ -13,8 +13,16 @@ CDPATH=.:$HOME:$HOME/projects:$HOME/Desktop
 export PATH="$HOME/bin:$DOTFILES/bin:$PATH"
 
 # Set default editor
-export EDITOR='vim'
-export VISUAL='vim'
+if command -v cursor &> /dev/null; then
+  export EDITOR='cursor'
+  export VISUAL='cursor'
+elif command -v code &> /dev/null; then
+  export EDITOR='code --wait'
+  export VISUAL='code --wait'
+else
+  export EDITOR='vim'
+  export VISUAL='vim'
+fi
 
 # Set ripgrep config file
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
@@ -44,8 +52,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # Load plugins with Zinit
 zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-history-substring-search
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Source custom files
 source "$DOTFILES/zsh/functions.zsh"

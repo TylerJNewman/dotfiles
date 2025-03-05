@@ -80,10 +80,13 @@ function preexec() {
 function precmd() {
   vcs_info
   unset cmd_timestamp
+  
+  # Set a new random emoji for each prompt
+  PROMPT_EMOJI=$(setRandomEmoji)
 }
 
 # Set the prompt
-PROMPT='$PROMPT_EMOJI %{$fg[cyan]%}$(get_pwd)%{$reset_color%} $(get_git_status)
+PROMPT='${PROMPT_EMOJI} %{$fg[cyan]%}$(get_pwd)%{$reset_color%} $(get_git_status)
 %{$fg[magenta]%}❯%{$reset_color%} '
 
 RPROMPT='$(cmd_exec_time)'
