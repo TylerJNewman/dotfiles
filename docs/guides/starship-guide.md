@@ -189,7 +189,7 @@ This indicates:
 
 ## Customization
 
-To modify your Starship prompt, edit `~/.config/starship.toml`. Here's the current minimal configuration:
+To modify your Starship prompt, edit `~/dotfiles/config/starship/starship.toml`. Here's the current minimal configuration:
 
 ```toml
 # Use a single line prompt
@@ -270,7 +270,7 @@ If git status information isn't appearing:
 
 3. Verify your Starship configuration includes the git modules:
    ```bash
-   grep "git_" ~/.config/starship.toml
+   grep "git_" ~/dotfiles/config/starship/starship.toml
    ```
 
 ### Slow Prompt
@@ -290,12 +290,12 @@ If you want to reset to the default Starship configuration:
 
 1. Backup your current configuration:
    ```bash
-   cp ~/.config/starship.toml ~/.config/starship.toml.bak
+   cp ~/dotfiles/config/starship/starship.toml ~/dotfiles/config/starship/starship.toml.bak
    ```
 
 2. Create a minimal configuration:
    ```bash
-   echo "# Using Starship defaults" > ~/.config/starship.toml
+   echo "# Using Starship defaults" > ~/dotfiles/config/starship/starship.toml
    ```
 
 ## Further Resources

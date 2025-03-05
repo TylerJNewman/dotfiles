@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-
-# This script runs when you log in to set up your development environment
-# Inspired by Kent C. Dodds' dotfiles
+#
+# File: setup-environment.sh
+# Purpose: Sets up your development environment when you log in
+# Dependencies: None
+# Last updated: 2024-03-05
+# Author: Tyler Newman
+#
+# This script runs when you log in to set up your development environment.
+# It creates daily directories, checks for updates, and performs maintenance tasks.
 
 # Set up colors for output
 RED='\033[0;31m'

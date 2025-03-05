@@ -12,16 +12,66 @@ git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 
-# Install git hooks (optional but recommended)
-./bin/install-git-hooks.sh
-
 # Restart your terminal or source your zshrc
 source ~/.zshrc
 ```
 
-> **Note**: This setup requires a [Nerd Font](https://www.nerdfonts.com/) for proper symbol display in the terminal. The installation script will install Hack Nerd Font, but you'll need to configure your terminal to use it.
+> **Note**: This setup requires a [Nerd Font](https://www.nerdfonts.com/) for proper symbol display in the terminal.
 
-### Recommended Versions
+## Simple Maintenance Commands
+
+This repository includes several simple scripts to help maintain your dotfiles:
+
+```bash
+# Update your dotfiles
+./bin/update.sh
+
+# Clean up temporary files
+./bin/clean-backups.sh
+
+# Check for duplicate functions and aliases
+./bin/check-duplicates.sh
+
+# Measure shell startup time
+./bin/zsh-time.sh
+```
+
+## Organization
+
+The repository follows a simple, maintainable structure:
+
+```
+dotfiles/
+├── bin/                  # Utility scripts
+├── config/               # Configuration files
+│   ├── ripgrep/          # Ripgrep configuration
+│   └── starship/         # Starship prompt configuration
+├── docs/                 # Documentation
+├── git/                  # Git configuration
+│   ├── gitconfig         # Git settings
+│   └── gitignore_global  # Global gitignore patterns
+├── macos/                # macOS-specific files
+│   ├── Brewfile          # Homebrew dependencies
+│   └── defaults.sh       # macOS system defaults
+├── on-login/             # Scripts to run on login
+├── zsh/                  # ZSH configuration
+│   ├── aliases/          # Command aliases by category
+│   ├── functions/        # Shell functions by category
+│   ├── configs/          # Tool-specific configurations
+│   └── zshrc             # Main ZSH configuration file
+├── install.sh            # Installation script
+└── README.md             # This file
+```
+
+## Guiding Principles
+
+1. **Simplicity**: Keep configurations simple and easy to understand
+2. **Modularity**: Organize related settings into separate files
+3. **Readability**: Use clear comments and consistent formatting
+4. **Maintainability**: Make it easy to update and extend
+5. **Performance**: Optimize for shell startup time
+
+## Recommended Versions
 
 | Tool | Minimum Version |
 |------|-----------------|
@@ -38,17 +88,6 @@ Comprehensive documentation for this dotfiles repository is available in the [do
 - [Managing Your Dotfiles](docs/guides/managing-dotfiles.md) - Complete workflow for managing, updating, and syncing your dotfiles
 - [Starship Guide](docs/guides/starship-guide.md) - Detailed documentation for customizing your Starship prompt
 - [Frequently Asked Questions](docs/guides/faq.md) - Answers to common questions about the dotfiles system
-
-## Guiding Principles
-
-1. **Modularity First**: Keep configurations separate and focused on specific tools.
-2. **Security Conscious**: Never commit sensitive data like API keys or tokens.
-3. **Self-documenting**: Maintain clear comments and organization to understand each configuration.
-4. **Cross-platform Compatible**: Support both macOS and Linux when possible.
-5. **Version Controlled**: Track changes systematically with meaningful commit messages.
-6. **Idempotent**: Installation should be repeatable without side effects.
-7. **Minimally Invasive**: Avoid changing system defaults unless necessary.
-8. **Performance Focused**: Optimize for shell startup time and responsiveness.
 
 ## Structure
 
@@ -76,7 +115,9 @@ dotfiles/
 │   ├── gitconfig         # Git settings
 │   └── gitignore_global  # Global gitignore patterns
 ├── vim/                  # Vim configuration
-├── Brewfile              # Homebrew dependencies
+├── macos/                # macOS-specific files
+│   ├── Brewfile          # Homebrew dependencies
+│   └── defaults.sh       # macOS system defaults
 ├── install.sh            # Installation script
 └── README.md             # This file
 ```
@@ -92,7 +133,7 @@ cd ~/dotfiles
 The installation script will:
 1. Create a backup of existing dotfiles
 2. Install Homebrew (if not already installed)
-3. Install dependencies from the Brewfile
+3. Install dependencies from the Brewfile in the macos directory
 4. Install Oh-My-Zsh (if not already installed)
 5. Set up Oh-My-Zsh plugins
 6. Install Starship, Atuin, and other tools
@@ -155,7 +196,7 @@ A custom Starship configuration is included in this repository. The configuratio
 - Customizable prompt character that changes color based on last command status
 - Improved directory display with better truncation settings
 
-The configuration is automatically installed to `~/.config/starship.toml` during setup. You can customize it further by editing this file directly.
+The configuration is stored in `config/starship/starship.toml` and is automatically installed to `~/.config/starship.toml` during setup. You can customize it further by editing either file.
 
 ```toml
 # Example of the current Starship configuration
@@ -213,10 +254,10 @@ Here are some recommended enhancements to further improve your development envir
 
 ### 1. Terminal Productivity Enhancements
 
-- **Customize Starship**: Edit the provided `~/.config/starship.toml` configuration to match your preferences
+- **Customize Starship**: Edit the provided Starship configuration to match your preferences
   ```bash
   # Edit the Starship configuration
-  nano ~/.config/starship.toml
+  nano ~/dotfiles/config/starship/starship.toml
   
   # Test changes immediately
   source ~/.zshrc
@@ -251,9 +292,10 @@ Here are some recommended enhancements to further improve your development envir
   - Create `macos/defaults.sh` with preferred system settings
   - Include options for development-focused macOS configuration
 
-- **Create Homebrew bundle**:
-  - Add `Brewfile` to manage dependencies with Homebrew
-  - Include development tools, applications, and fonts
+- **Enhance Homebrew bundle**:
+  - Update `macos/Brewfile` with additional development tools
+  - Organize dependencies by category (development, productivity, fonts)
+  - Add comments explaining the purpose of each tool
 
 - **Add container development setup**:
   - Create Docker development environment configurations

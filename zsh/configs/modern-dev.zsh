@@ -126,7 +126,7 @@ if command -v mycli &> /dev/null; then
 fi
 
 # Git enhancements
-if command -v lazygit &> /dev/null; then
+if type lazygit &> /dev/null; then
   alias lg="lazygit"
 fi
 

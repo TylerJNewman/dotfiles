@@ -1,6 +1,83 @@
-# ZSH Lazy Loading
+# ZSH Configuration Files
 
-This directory contains configuration files for ZSH, including lazy loading implementations for various tools to improve shell startup time.
+This directory contains modular ZSH configuration files that are loaded by the main `.zshrc` file.
+
+## Simplified Structure
+
+To improve maintainability and readability, we've organized the configuration files into these categories:
+
+1. **Core Settings**
+   - `path.zsh` - PATH and environment variable configuration
+   - `theme.zsh` - Terminal appearance settings
+
+2. **Tool Configuration**
+   - `tools.zsh` - Basic development tool configuration
+   - `dev-workflow.zsh` - Development workflow enhancements
+   - `productivity.zsh` - Productivity tools and functions
+
+3. **Performance Optimization**
+   - `lazy-tools.zsh` - Lazy loading for better shell startup time
+   - `nvm-lazy.zsh` - Optimized Node.js version manager loading
+
+## Adding New Configurations
+
+When adding new configurations:
+
+1. Decide which category your configuration belongs to
+2. If it fits in an existing file, add it there
+3. If it needs a new file, follow the naming convention: `purpose.zsh`
+4. Add a clear header comment explaining the file's purpose
+5. Group related settings together with section comments
+
+## Best Practices
+
+- Keep files small and focused on a single purpose
+- Use comments to explain non-obvious configurations
+- Avoid duplicating functionality across files
+- Test changes to ensure they don't slow down shell startup
+- Run `bin/measure-startup-time.sh` to check performance impact
+
+## Avoiding Alias Conflicts
+
+When defining functions, be careful about conflicts with existing aliases:
+
+1. **Check for existing aliases** before defining a function with the same name
+   ```bash
+   # Bad: Will cause errors if 'kl' is already an alias
+   kl() {
+     kubectl logs -f "$1"
+   }
+   
+   # Good: Use a different name to avoid conflicts
+   kube_logs() {
+     kubectl logs -f "$1"
+   }
+   ```
+
+2. **Use the `command` prefix** when calling commands that might be aliased
+   ```bash
+   # Bad: Will cause errors if 'git' is aliased
+   function branch_checkout() {
+     git checkout "$1"
+   }
+   
+   # Good: Use 'command' to bypass aliases
+   function branch_checkout() {
+     command git checkout "$1"
+   }
+   ```
+
+3. **Use the explicit `function` keyword** for function definitions
+   ```bash
+   # Good: Explicit function declaration
+   function my_function() {
+     # function body
+   }
+   ```
+
+## Loading Order
+
+Files are loaded in alphabetical order by the main `.zshrc` file. If you need to control loading order, prefix filenames with numbers (e.g., `01-path.zsh`, `02-theme.zsh`).
 
 ## Lazy Loading Implementation
 

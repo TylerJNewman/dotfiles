@@ -97,7 +97,7 @@ This will:
 To customize your Starship prompt, edit the configuration file:
 
 ```bash
-vim ~/.config/starship.toml
+vim ~/dotfiles/config/starship/starship.toml
 ```
 
 For detailed information on customizing Starship, see the [Starship Guide](../starship-guide.md).

@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
-# This script sets up the on-login scripts to run automatically when you log in
-# Inspired by Kent C. Dodds' dotfiles
+# File: setup-on-login.sh
+# Purpose: Sets up the on-login scripts to run automatically when you log in
+# Dependencies: None
+# Last updated: 2024-03-05
+# Author: Tyler Newman
+#
+# This script configures macOS LaunchAgents to automatically run the scripts
+# in the ~/dotfiles/on-login directory when you log in. It does NOT run those
+# scripts directly - it just sets them up to run on login.
+#
+# The actual login scripts should be placed in the ~/dotfiles/on-login directory.
 
 # Set up colors for output
 GREEN='\033[0;32m'
@@ -9,7 +18,7 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 ON_LOGIN_DIR="$DOTFILES_DIR/on-login"
 LAUNCH_AGENTS_DIR="$HOME/Library/LaunchAgents"
 

@@ -10,7 +10,7 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 echo -e "${BLUE}Setting up dotfiles from $DOTFILES_DIR${NC}"
 
@@ -67,7 +67,8 @@ backup_and_link "$DOTFILES_DIR/zsh/zshrc" "$HOME/.zshrc"
 
 # Link ripgrep configuration
 echo -e "${YELLOW}Setting up ripgrep configuration...${NC}"
-backup_and_link "$DOTFILES_DIR/ripgreprc" "$HOME/.ripgreprc"
+mkdir -p "$HOME/.config/ripgrep"
+backup_and_link "$DOTFILES_DIR/config/ripgrep/ripgreprc" "$HOME/.config/ripgrep/ripgreprc"
 
 # Set up macOS defaults if on macOS
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -79,10 +80,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   fi
 fi
 
-# Set up on-login scripts
-if [ -f "$DOTFILES_DIR/setup-on-login.sh" ]; then
-  echo -e "${YELLOW}Setting up on-login scripts...${NC}"
-  "$DOTFILES_DIR/setup-on-login.sh"
+# Run setup-on-login.sh if it exists
+if [ -f "$DOTFILES_DIR/bin/setup-on-login.sh" ]; then
+  echo -e "${YELLOW}Running setup-on-login.sh...${NC}"
+  "$DOTFILES_DIR/bin/setup-on-login.sh"
 fi
 
 # Clean up empty backup directory if no backups were needed

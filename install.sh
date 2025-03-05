@@ -132,7 +132,7 @@ update_dotfiles() {
     # Update dependencies
     if command -v brew &> /dev/null; then
       echo -e "${BLUE}Updating Homebrew dependencies...${NC}"
-      brew bundle
+      brew bundle --file=macos/Brewfile
     fi
     
     # Update Oh-My-Zsh plugins
@@ -190,7 +190,7 @@ fi
 # Install dependencies from Brewfile
 if command -v brew &> /dev/null; then
   echo -e "${BLUE}Installing dependencies from Brewfile...${NC}"
-  brew bundle
+  brew bundle --file=macos/Brewfile
   
   # Check for Nerd Font after Brewfile installation
   check_nerd_font
@@ -246,11 +246,11 @@ fi
 
 # Create Starship config directory if it doesn't exist
 echo -e "${BLUE}Setting up Starship configuration...${NC}"
-mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.config/starship"
 
 # Create symlink for Starship configuration file
 echo -e "${BLUE}Creating symlink for Starship configuration...${NC}"
-ln -sf $HOME/dotfiles/starship.toml $HOME/.config/starship.toml
+ln -sf $HOME/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
 echo -e "${GREEN}Starship configuration linked!${NC}"
 
 # Remind about Nerd Font requirement
@@ -334,6 +334,10 @@ fi
 # Create symlink for .zshrc
 echo -e "${BLUE}Linking .zshrc${NC}"
 ln -sf $HOME/dotfiles/zsh/zshrc $HOME/.zshrc
+
+# Run setup-links.sh to create additional symlinks
+echo -e "${BLUE}Setting up additional symlinks...${NC}"
+$HOME/dotfiles/bin/setup-links.sh
 
 # Copy the example secrets file if env.zsh doesn't exist
 if [ ! -f "$HOME/dotfiles/zsh/secrets/env.zsh" ]; then

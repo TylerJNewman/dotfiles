@@ -26,7 +26,7 @@ else
 fi
 
 # Set ripgrep config file
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+export RIPGREP_CONFIG_PATH="$DOTFILES/config/ripgrep/ripgreprc"
 
 # Load custom modules with error handling
 for file in "$ZSH_CUSTOM_DIR"/*.zsh; do

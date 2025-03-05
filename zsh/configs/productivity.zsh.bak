@@ -24,8 +24,8 @@ if command -v fzf &> /dev/null; then
     fi
   }
   
-  # Git checkout branch with fzf - using command git to avoid alias conflicts
-  function gcob() {
+  # Git checkout branch with fzf
+  gcob() {
     local branches branch
     branches=$(command git branch -a) &&
     branch=$(echo "$branches" | fzf +s +m -e) &&

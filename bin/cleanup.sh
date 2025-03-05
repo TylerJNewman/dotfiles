@@ -36,8 +36,8 @@ echo -e "${GREEN}Temporary files removed.${NC}"
 echo -e "\n${BLUE}Checking script permissions...${NC}"
 find "$ROOT_DIR/bin" -name "*.sh" -type f -exec chmod +x {} \;
 chmod +x "$ROOT_DIR/install.sh" 2>/dev/null || true
-chmod +x "$ROOT_DIR/setup-links.sh" 2>/dev/null || true
-chmod +x "$ROOT_DIR/setup-on-login.sh" 2>/dev/null || true
+chmod +x "$ROOT_DIR/bin/setup-links.sh" 2>/dev/null || true
+chmod +x "$ROOT_DIR/bin/setup-on-login.sh" 2>/dev/null || true
 echo -e "${GREEN}Script permissions updated.${NC}"
 
 # 3. Verify that configuration files are properly formatted

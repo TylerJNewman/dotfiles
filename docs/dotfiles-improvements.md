@@ -250,7 +250,7 @@ Consider switching to fast-syntax-highlighting for better performance, as you've
 
 ### 1. Ripgrep Configuration
 
-Kent includes a `.ripgreprc` file with useful defaults:
+Kent includes a `ripgreprc` file with useful defaults (now located in `config/ripgrep/ripgreprc`):
 
 ```
 # Avoid long lines

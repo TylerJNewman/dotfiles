@@ -1,7 +1,7 @@
 # Developer Workflow Enhancements
 
 # Git workflow enhancements
-if command -v git &> /dev/null; then
+if type git &> /dev/null; then
   # Git status shorthand
   alias gs="git status -sb"
   
@@ -13,22 +13,22 @@ if command -v git &> /dev/null; then
   
   # Git add all and commit
   gac() {
-    git add -A && git commit -m "$*"
+    command git add -A && command git commit -m "$*"
   }
   
   # Git add all, commit, and push
   gacp() {
-    git add -A && git commit -m "$*" && git push
+    command git add -A && command git commit -m "$*" && command git push
   }
   
   # Create a new branch and switch to it
   gnb() {
-    git checkout -b "$1"
+    command git checkout -b "$1"
   }
   
   # Delete merged branches
   gdmb() {
-    git branch --merged | grep -v "\*" | grep -v "master" | grep -v "main" | xargs -n 1 git branch -d
+    command git branch --merged | grep -v "\*" | grep -v "master" | grep -v "main" | xargs -n 1 command git branch -d
   }
   
   # Git stash operations
@@ -44,9 +44,9 @@ if command -v git &> /dev/null; then
   
   # Git bisect helper
   gbisect() {
-    git bisect start
-    git bisect bad
-    git bisect good "$1"
+    command git bisect start
+    command git bisect bad
+    command git bisect good "$1"
   }
 fi
 
@@ -141,8 +141,8 @@ if command -v kubectl &> /dev/null; then
   alias kctx="kubectl config use-context"
   alias kns="kubectl config set-context --current --namespace"
   
-  # Get pod logs
-  kl() {
+  # Get pod logs (renamed to avoid conflict with kl alias)
+  kube_logs() {
     kubectl logs -f "$1"
   }
   

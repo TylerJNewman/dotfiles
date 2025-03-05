@@ -137,19 +137,19 @@ function gif() {
 }
 
 # Get weather information
-function weather() {
+function get_weather() {
   local city="${1:-San Francisco}"
   curl -s "wttr.in/${city// /+}?m" | grep -v "Follow"
 }
 
-# Get IP address
-function myip() {
+# Get public IP address
+function get_public_ip() {
   curl -s https://api.ipify.org
   echo
 }
 
 # Get local IP address
-function localip() {
+function get_local_ip() {
   ipconfig getifaddr en0
 }
 
