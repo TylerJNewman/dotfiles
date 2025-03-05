@@ -1,0 +1,170 @@
+# Cursor Rules for Dotfiles Repository
+
+## 1. Project Overview
+
+- **Repository**: Dotfiles
+- **Purpose**: Personal configuration files and scripts for system setup and customization
+- **Design Philosophy**: Organized, maintainable, and consistent configuration management
+- **Platform Compatibility**: Primarily designed for macOS, with potential cross-platform support
+
+## 2. General Guidelines
+
+- Use 2-space indentation for shell scripts, 4-space for Python
+- Maintain consistent quote style within files (prefer double quotes for shell scripts)
+- Document non-obvious code with clear comments
+- End all scripts with a newline
+- Remove debug code and commented-out sections when no longer needed
+- Run formatting tools when available
+- Follow the **DRY Principle**: Avoid duplication of code or logic across files
+- Use **Explicit Naming**: Create descriptive variable and function names
+- Implement **Error Handling**: Include proper error checking in scripts and loaders
+- Avoid **Magic Numbers**: Replace hardcoded values with named constants
+- Add meaningful comments explaining "why" not just "what"
+
+## 3. File Organization
+
+- Keep related files together in appropriate directories:
+  - Shell functions in `zsh/functions.zsh` or topic-specific files in `zsh/functions/`
+  - Aliases in `zsh/aliases.zsh` or topic-specific files in `zsh/aliases/`
+  - Configuration files in their respective directories
+- Use lowercase with hyphens for directories and files (e.g., `git-helpers.zsh`)
+- Use descriptive names that indicate the purpose of the file
+- Prefix temporary files with `_tmp_` and add to `.gitignore`
+- Follow this recommended structure for dotfiles organization:
+
+```
+~/dotfiles/
+├── zsh/
+│   ├── aliases.zsh      # All aliases
+│   ├── functions.zsh    # Custom functions
+│   ├── exports.zsh      # Environment variables
+│   ├── completion.zsh   # Tab completion settings
+│   ├── prompt.zsh       # Prompt configuration
+│   └── plugins.zsh      # Plugin management
+├── git/
+│   └── gitconfig        # Git configuration
+├── scripts/             # Utility scripts
+├── install.sh           # Installation script
+└── README.md            # Documentation
+```
+
+## 4. Script Structure
+
+- Start each script with a shebang line and brief description
+- Group related functions and variables together
+- Place helper functions before they are used
+- Make all scripts executable (`chmod +x`)
+- Every modular file should:
+  1. Start with a comment block explaining its purpose
+  2. Group related configurations together
+  3. Use consistent naming conventions
+  4. Include relevant environment variable checks
+
+Example module header:
+
+```zsh
+# File: aliases.zsh
+# Purpose: Contains all shell aliases grouped by functionality
+# Dependencies: None
+# Last updated: YYYY-MM-DD
+```
+
+## 5. Git Practices
+
+- Make atomic commits (one logical change per commit)
+- Write clear commit messages with a concise subject line
+- Reference issues or tasks in commit messages when applicable
+- Run `./bin/lint-scripts.sh` if available before committing
+- Test changes in a clean environment when possible
+- Avoid committing sensitive information or tokens
+- Include a `.gitignore` file for environment-specific files
+
+## 6. Development Principles
+
+- **Efficiency**: Ensure scripts are streamlined, error-free, and optimize shell startup time
+- **Robustness**: Handle edge cases with clear error messages and suggested resolutions
+- **Documentation**: Keep README.md and other documentation up to date
+- **Modularity**: Organize configurations into logical, purpose-specific files
+- **Simplicity**: Create dotfiles that are easy to understand, clone, and use
+- **Maintainability**: Follow consistent patterns and document thoroughly
+- **Compatibility**: Support multiple environments and handle edge cases gracefully
+- **Single Responsibility**: Each file and function should have one clear purpose
+
+## 7. Implementation Patterns
+
+### For Main .zshrc
+
+```zsh
+# Core settings
+export DOTFILES="$HOME/dotfiles"
+export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
+
+# Load custom modules with error handling
+for file in "$ZSH_CUSTOM_DIR"/*.zsh; do
+  if [ -r "$file" ]; then
+    source "$file" || echo "Error loading $file"
+  fi
+done
+```
+
+## 8. Testing & Compatibility
+
+- Test shell startup time regularly
+- Verify compatibility across different environments
+- Create a portable installation script
+- Document any environment-specific configurations
+- Consider using conditional loading based on OS or environment
+
+## 9. Continuous Improvement
+
+- Regularly review repository structure
+- Remove dead or duplicate code
+- Address incomplete sections
+- Update version numbers when applicable
+- Consider adding tests for new functionality
+
+## 10. Cleanup Checklist
+
+Before finishing a coding session:
+- Remove any temporary files created during development
+- Ensure all scripts have proper permissions
+- Verify that configuration files are properly formatted
+- Check that all changes are properly documented
+- Run linting tools if available
+- Test changes in a clean environment
+- Commit changes with clear, descriptive messages
+- Test shell startup time
+
+## 11. Documentation Standards
+
+Each component should be documented with:
+- Purpose and functionality
+- Configuration options
+- Dependencies
+- Example usage
+- Any environment-specific considerations
+
+## 12. Editor-Specific Settings
+
+- Use the repository's `.editorconfig` for consistent formatting
+- Configure Cursor to use the repository's linting rules
+- Set up Cursor to respect `.gitignore` for search results
+- Install recommended extensions for shell script linting
+- Use shellcheck integration when editing shell scripts
+
+## Automation
+
+Consider adding these aliases to your shell for quick cleanup:
+
+```bash
+# Check shell script syntax
+alias check-scripts="find . -name '*.sh' -type f -exec bash -n {} \;"
+
+# Make all scripts executable
+alias fix-perms="find . -name '*.sh' -type f -exec chmod +x {} \;"
+
+# Remove temporary files
+alias clean-temp="find . -name '_tmp_*' -type f -delete"
+```
+
+By following these guidelines, we can maintain a clean, organized, and consistent dotfiles repository that is easy to understand and maintain. 

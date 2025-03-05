@@ -2,3 +2,9 @@
 *.log
 zsh/secrets/env.zsh
 zsh/local.zsh
+_tmp_*
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo

@@ -4,7 +4,8 @@
 # Inspired by Kent C. Dodds' dotfiles
 
 # Path to dotfiles
-DOTFILES="$HOME/dotfiles"
+export DOTFILES="$HOME/dotfiles"
+export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
 
 # Set up CDPATH for easier navigation
 CDPATH=.:$HOME:$HOME/projects:$HOME/Desktop
@@ -26,6 +27,24 @@ fi
 
 # Set ripgrep config file
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+# Load custom modules with error handling
+for file in "$ZSH_CUSTOM_DIR"/*.zsh; do
+  if [ -r "$file" ] && [ "$file" != "$ZSH_CUSTOM_DIR/zshrc" ]; then
+    source "$file" || echo "Error loading $file"
+  fi
+done
+
+# Load custom modules from subdirectories
+for dir in "$ZSH_CUSTOM_DIR"/*/ ; do
+  if [ -d "$dir" ]; then
+    for file in "$dir"*.zsh; do
+      if [ -r "$file" ]; then
+        source "$file" || echo "Error loading $file"
+      fi
+    done
+  fi
+done
 
 # History configuration
 HISTFILE="$HOME/.zsh_history"
