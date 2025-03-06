@@ -8,10 +8,13 @@ export DOTFILES="$HOME/dotfiles"
 export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
 
 # Set up CDPATH for easier navigation
-CDPATH=.:$HOME:$HOME/projects:$HOME/Desktop
+CDPATH=.:$HOME:$HOME/projects:$HOME/code:$HOME/Desktop
 
 # Set up PATH
 export PATH="$HOME/bin:$DOTFILES/bin:$PATH"
+
+# Add node_modules/.bin to PATH for faster command resolution
+PATH="$PATH:./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:../../../node_modules/.bin"
 
 # Set default editor
 if command -v cursor &> /dev/null; then
