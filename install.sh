@@ -108,6 +108,17 @@ check_tool_versions() {
       echo -e "${GREEN}Homebrew version $BREW_VERSION ✓${NC}"
     fi
   fi
+  
+  # Check UV version
+  if command -v uv &> /dev/null; then
+    UV_VERSION=$(uv --version | cut -d ' ' -f 2)
+    UV_MIN_VERSION="0.1.0"
+    if [ "$(printf '%s\n' "$UV_MIN_VERSION" "$UV_VERSION" | sort -V | head -n1)" != "$UV_MIN_VERSION" ]; then
+      echo -e "${YELLOW}Warning: UV version $UV_VERSION is below recommended version $UV_MIN_VERSION${NC}"
+    else
+      echo -e "${GREEN}UV version $UV_VERSION ✓${NC}"
+    fi
+  fi
 }
 
 # Function to update dotfiles

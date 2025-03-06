@@ -76,9 +76,11 @@ symbol = " 󰎙 "
 detect_extensions = ["js", "jsx", "ts", "tsx", "mjs", "cjs"]
 
 [python]
-format = "[$symbol$version]($style) "
+format = "[$symbol$version( \\($virtualenv\\))]($style) "
 symbol = " 󰌠 "
 style = "yellow bold"
+detect_extensions = ["py", "pyc", "pyd"]
+python_binary = ["python", "python3", "python2"]
 
 [rust]
 format = "[$symbol$version]($style) "

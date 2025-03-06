@@ -27,6 +27,7 @@ brew "pnpm"
 brew "bun"
 brew "python"
 brew "pipx"
+brew "uv"
 brew "docker"
 brew "docker-compose"
 

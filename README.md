@@ -234,6 +234,21 @@ These symbols show the state of your git repository:
 | `=N` | Conflicted files | You have N merge conflicts that need resolution |
 | `SN` | Stashed changes | You have N changes saved in git stash |
 
+### Python Development with UV
+
+The dotfiles include support for [uv](https://github.com/astral-sh/uv), a modern Python package installer and resolver that's significantly faster than pip:
+
+- Automatic installation via Homebrew
+- Configuration in `zsh/configs/python.zsh`
+- Aliases for common uv commands:
+  - `pip` is aliased to `uv pip` for seamless integration
+  - `uvi` for `uv pip install`
+  - `uvvenv` for `uv venv`
+  - `pyvenv` function to create and activate a virtual environment
+  - `uvinstall` function to install from requirements.txt
+
+UV is configured to use the system Python by default, but you can easily create isolated environments with the included helper functions.
+
 ## External Dependencies
 
 - [Oh-My-Zsh](https://ohmyz.sh/)
