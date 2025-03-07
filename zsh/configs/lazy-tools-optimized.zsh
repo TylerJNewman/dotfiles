@@ -60,14 +60,14 @@ if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then
   lazy_load "Google Cloud SDK" "source \"$HOME/google-cloud-sdk/path.zsh.inc\" && source \"$HOME/google-cloud-sdk/completion.zsh.inc\"" "gcloud" "gsutil" "bq"
 fi
 
-# Lazy load Deno
-if [ -d "$HOME/.deno" ]; then
-  lazy_load "Deno" "export DENO_INSTALL=\"$HOME/.deno\" && export PATH=\"\$DENO_INSTALL/bin:\$PATH\"" "deno"
+# Lazy load Deno - using DENO_INSTALL from path.zsh
+if [ -d "$DENO_INSTALL" ]; then
+  lazy_load "Deno" "export PATH=\"\$DENO_INSTALL/bin:\$PATH\"" "deno"
 fi
 
-# Lazy load Bun
-if [ -d "$HOME/.bun" ]; then
-  lazy_load "Bun" "export BUN_INSTALL=\"$HOME/.bun\" && export PATH=\"\$BUN_INSTALL/bin:\$PATH\" && [ -s \"$HOME/.bun/_bun\" ] && source \"$HOME/.bun/_bun\"" "bun" "bunx"
+# Lazy load Bun - using BUN_INSTALL from path.zsh
+if [ -d "$BUN_INSTALL" ]; then
+  lazy_load "Bun" "export PATH=\"\$BUN_INSTALL/bin:\$PATH\" && [ -s \"$BUN_INSTALL/_bun\" ] && source \"$BUN_INSTALL/_bun\"" "bun" "bunx"
 fi
 
 # Lazy load FZF

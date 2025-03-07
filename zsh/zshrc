@@ -10,11 +10,10 @@ export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
 # Set up CDPATH for easier navigation
 CDPATH=.:$HOME:$HOME/projects:$HOME/code:$HOME/Desktop
 
-# Set up PATH
-export PATH="$HOME/bin:$DOTFILES/bin:$PATH"
-
-# Add node_modules/.bin to PATH for faster command resolution
-PATH="$PATH:./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:../../../node_modules/.bin"
+# Load PATH configuration early
+if [ -r "$ZSH_CUSTOM_DIR/configs/path.zsh" ]; then
+  source "$ZSH_CUSTOM_DIR/configs/path.zsh" || echo "Error loading PATH configuration"
+fi
 
 # Set default editor
 if command -v cursor &> /dev/null; then

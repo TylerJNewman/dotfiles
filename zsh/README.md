@@ -15,6 +15,7 @@ This directory contains ZSH shell configuration files and scripts.
 - `aliases/` - Modular alias files organized by category
 - `functions/` - Modular function files organized by category
 - `configs/` - Configuration files for specific tools and workflows
+- `path.zsh` - Centralized PATH management (see [PATH Management](#path-management) below)
 - `secrets/` - Secret environment variables and tokens (not committed)
 
 ## Loading Order
@@ -24,6 +25,27 @@ Files are loaded in the following order:
 1. `zshrc` - Main configuration file
 2. All `.zsh` files in the `zsh` directory
 3. All `.zsh` files in subdirectories
+
+## PATH Management
+
+Our PATH management follows a minimalist approach in `configs/path.zsh`:
+
+1. Simple, direct PATH modifications with clear organization
+2. Automatic deduplication with `typeset -U PATH`
+3. Fast node_modules resolution (8 levels deep)
+4. Tool directories defined for lazy loading
+
+Key features:
+- System and user bin directories
+- Package manager paths
+- Tool directories for lazy loading
+- Node.js project paths
+- Built-in PATH deduplication
+
+To add a new PATH entry:
+1. Edit `configs/path.zsh`
+2. Add your entry in the appropriate section
+3. No need to worry about duplicates - they're automatically removed
 
 ## Customization
 

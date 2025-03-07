@@ -1,37 +1,32 @@
-# PATH configurations
+#!/usr/bin/env zsh
+#
+# File: path.zsh
+# Purpose: Minimal PATH management
+# Last updated: 2024-03-07
 
-# Dotfiles bin directory
-export PATH="$HOME/dotfiles/bin:$PATH"
-
-# Yarn
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# PNPM
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-
-# Homebrew
-export PATH="/opt/homebrew/bin:$PATH"
-
-# Deno - Now lazy loaded in lazy-tools.zsh
-# export DENO_INSTALL="$HOME/.deno"
-# export PATH="$DENO_INSTALL/bin:$PATH"
-
-# Bun - Now lazy loaded in lazy-tools.zsh
-# export BUN_INSTALL="$HOME/.bun"
-# export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Pipx
-export PIPX_HOME=$HOME/.pipx
-export PIPX_BIN_DIR=$HOME/.local/bin
-export PATH="$PIPX_BIN_DIR:$PATH"
-export PATH="$PIPX_HOME/completions:$PATH"
-
-# NVM - Now using lazy loading in nvm-lazy.zsh
+# Core tool directories
 export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PNPM_HOME="$HOME/Library/pnpm"
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+export BUN_INSTALL="$HOME/.bun"
 
-# Python aliases
+# PATH additions (highest to lowest priority)
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/dotfiles/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$PNPM_HOME:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"  # For uv and other Rust tools
+
+# Node modules (lowest priority)
+export PATH="$PATH:./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:../../../node_modules/.bin:../../../../node_modules/.bin"
+
+# Remove duplicates
+typeset -U PATH
+
+# Helper aliases
+alias path='echo -e ${PATH//:/\\n}'
 alias python=python3
-alias pip=pip3
+alias pip=python3 -m uv pip  # Use uv as pip replacement
+alias pip3=python3 -m uv pip
