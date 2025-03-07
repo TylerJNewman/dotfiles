@@ -28,5 +28,6 @@ typeset -U PATH
 # Helper aliases
 alias path='echo -e ${PATH//:/\\n}'
 alias python=python3
-alias pip=python3 -m uv pip  # Use uv as pip replacement
-alias pip3=python3 -m uv pip
+
+# Use standard pip for compatibility
+alias pip=pip3
