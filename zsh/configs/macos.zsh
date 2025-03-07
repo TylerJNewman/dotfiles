@@ -5,7 +5,6 @@
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
-alias deleteDSFiles="find . -name '.DS_Store' -type f -delete"  # Alternative DS_Store cleanup
 
 # System
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
