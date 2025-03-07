@@ -63,6 +63,18 @@ zstyle ':completion:*' completer _complete _ignored _files
 # Custom height for directory navigation
 zstyle ':fzf-tab:complete:cd:*' fzf-command fzf --height 50%
 
+# Preview configuration for different commands
+zstyle ':fzf-tab:complete:(ls|cat|bat|vim|nvim|nano|less):*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath'
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff --color=always $realpath | bat'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo $realpath'
+
+# Use continuous-trigger for better navigation
+zstyle ':fzf-tab:*' continuous-trigger 'tab'
+
+# Set different preview command for different file types
+zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
+zstyle ':fzf-tab:complete:*:directories' fzf-preview 'ls -la --color=always $realpath'
+
 # fzf functions
 # fe - fuzzy edit file
 fe() {
@@ -119,4 +131,44 @@ elif [[ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]]; then
 elif [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
   source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
   source /opt/homebrew/opt/fzf/shell/completion.zsh
-fi 
+fi
+
+# fzf functions
+function fzf-git-branch() {
+  git rev-parse HEAD > /dev/null 2>&1 || return
+  
+  git branch --color=always --all --sort=-committerdate |
+    grep -v HEAD |
+    fzf --height 50% --ansi --no-multi --preview-window right:65% \
+        --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+    sed "s/.* //"
+}
+
+function fzf-git-checkout() {
+  git rev-parse HEAD > /dev/null 2>&1 || return
+  
+  local branch
+  
+  branch=$(fzf-git-branch)
+  if [[ "$branch" = "" ]]; then
+    echo "No branch selected."
+    return
+  fi
+  
+  # If branch name starts with 'remotes/' then it's a remote branch
+  if [[ "$branch" = 'remotes/'* ]]; then
+    # Get the branch name without the 'remotes/origin/' part
+    local remoteBranch=$(echo "$branch" | sed 's/remotes\/origin\///')
+    git checkout -b "$remoteBranch" --track "origin/$remoteBranch"
+  else
+    git checkout "$branch"
+  fi
+}
+
+function fzf-git-log() {
+  git rev-parse HEAD > /dev/null 2>&1 || return
+  
+  local commits=$(git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@")
+  local commit=$(echo "$commits" | fzf --tac +s +m -e) &&
+  git checkout $(echo "$commit" | sed "s/ .*//")
+} 

@@ -35,34 +35,43 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# Capture all output for later analysis
+output=""
+
 section "Checking for Plugin Conflicts"
 
 # Check fzf-tab dominance
 echo "Checking fzf-tab configuration..."
-if bindkey | grep -q "fzf-tab"; then
-  success "fzf-tab keybindings are active"
-else
-  warning "fzf-tab keybindings not found"
-fi
-
 if zstyle | grep -q "fzf-tab"; then
-  success "fzf-tab styles are configured"
+  success_msg="fzf-tab styles are configured"
+  success "$success_msg"
+  output+="$success_msg\n"
 else
-  warning "fzf-tab styles not configured"
+  warning_msg="fzf-tab styles not configured"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 # Check zoxide configuration
 echo "Checking zoxide configuration..."
 if env | grep -q "_ZO_DATA_DIR"; then
-  success "zoxide database is properly isolated"
+  success_msg="zoxide database is properly isolated"
+  success "$success_msg"
+  output+="$success_msg\n"
 else
-  warning "zoxide database location not explicitly set"
+  warning_msg="zoxide database location not explicitly set"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 if env | grep -q "_ZO_EXCLUDE_DIRS"; then
-  success "zoxide has network mounts excluded"
+  success_msg="zoxide has network mounts excluded"
+  success "$success_msg"
+  output+="$success_msg\n"
 else
-  warning "zoxide network mount exclusions not configured"
+  warning_msg="zoxide network mount exclusions not configured"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 # Check for duplicate keybindings
@@ -72,59 +81,102 @@ ALT_C_COUNT=$(bindkey | grep -c "\\ec")
 RIGHT_ARROW_COUNT=$(bindkey | grep -c "\\e\[C")
 
 if [ "$CTRL_R_COUNT" -gt 1 ]; then
-  error "Multiple Ctrl+R bindings detected (${CTRL_R_COUNT})"
+  error_msg="Multiple Ctrl+R bindings detected (${CTRL_R_COUNT})"
+  error "$error_msg"
+  output+="$error_msg\n"
 else
-  success "No duplicate Ctrl+R bindings"
+  success_msg="No duplicate Ctrl+R bindings"
+  success "$success_msg"
+  output+="$success_msg\n"
 fi
 
 if [ "$ALT_C_COUNT" -gt 1 ]; then
-  error "Multiple Alt+C bindings detected (${ALT_C_COUNT})"
+  error_msg="Multiple Alt+C bindings detected (${ALT_C_COUNT})"
+  error "$error_msg"
+  output+="$error_msg\n"
 else
-  success "No duplicate Alt+C bindings"
+  success_msg="No duplicate Alt+C bindings"
+  success "$success_msg"
+  output+="$success_msg\n"
 fi
 
 if [ "$RIGHT_ARROW_COUNT" -gt 1 ]; then
-  error "Multiple Right Arrow bindings detected (${RIGHT_ARROW_COUNT})"
+  error_msg="Multiple Right Arrow bindings detected (${RIGHT_ARROW_COUNT})"
+  error "$error_msg"
+  output+="$error_msg\n"
 else
-  success "No duplicate Right Arrow bindings"
+  success_msg="No duplicate Right Arrow bindings"
+  success "$success_msg"
+  output+="$success_msg\n"
 fi
 
 # Check for zsh-defer
 echo "Checking zsh-defer configuration..."
-if declare -f zsh-defer > /dev/null 2>&1; then
-  success "zsh-defer is available"
+# Source the plugins file to ensure zsh-defer is loaded for the check
+if [[ -f "$HOME/dotfiles/zsh/configs/plugins.zsh" ]]; then
+  source "$HOME/dotfiles/zsh/configs/plugins.zsh" 2>/dev/null
+fi
+
+if typeset -f zsh-defer > /dev/null 2>&1; then
+  success_msg="zsh-defer is available"
+  success "$success_msg"
+  output+="$success_msg\n"
   
   # Check if any critical paths are using zsh-defer
-  if declare -f compinit > /dev/null 2>&1 && declare -f compinit | grep -q "zsh-defer"; then
-    error "zsh-defer is blocking compinit (critical path)"
+  if typeset -f compinit > /dev/null 2>&1 && typeset -f compinit | grep -q "zsh-defer"; then
+    error_msg="zsh-defer is blocking compinit (critical path)"
+    error "$error_msg"
+    output+="$error_msg\n"
   else
-    success "zsh-defer not blocking critical paths"
+    success_msg="zsh-defer not blocking critical paths"
+    success "$success_msg"
+    output+="$success_msg\n"
   fi
 else
-  warning "zsh-defer not found"
+  warning_msg="zsh-defer not found"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 # Check for syntax highlighting configuration
 echo "Checking syntax highlighting configuration..."
-if env | grep -q "FAST_HIGHLIGHT"; then
-  success "Fast-syntax-highlighting is configured"
+# Source the syntax highlighting config to ensure it's loaded for the check
+if [[ -f "$HOME/dotfiles/zsh/configs/syntax-highlighting.zsh" ]]; then
+  source "$HOME/dotfiles/zsh/configs/syntax-highlighting.zsh" 2>/dev/null
+fi
+
+if typeset -p FAST_HIGHLIGHT > /dev/null 2>&1; then
+  success_msg="Fast-syntax-highlighting is configured"
+  success "$success_msg"
+  output+="$success_msg\n"
 else
-  warning "Fast-syntax-highlighting configuration not found"
+  warning_msg="Fast-syntax-highlighting configuration not found"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 # Check for lazy loading of heavy tools
 echo "Checking lazy loading configuration..."
-if declare -f lazy_load > /dev/null 2>&1 || declare -f defer_fn > /dev/null 2>&1; then
-  success "Lazy loading functions are defined"
+# Source the lazy-load file to ensure it's loaded for the check
+if [[ -f "$HOME/dotfiles/zsh/configs/lazy-load.zsh" ]]; then
+  source "$HOME/dotfiles/zsh/configs/lazy-load.zsh" 2>/dev/null
+fi
+
+if typeset -f lazy_load > /dev/null 2>&1 || typeset -f defer_fn > /dev/null 2>&1; then
+  success_msg="Lazy loading functions are defined"
+  success "$success_msg"
+  output+="$success_msg\n"
 else
-  warning "No lazy loading functions found"
+  warning_msg="No lazy loading functions found"
+  warning "$warning_msg"
+  output+="$warning_msg\n"
 fi
 
 section "Overall Health Check"
 
 # Count warnings and errors
-WARNING_COUNT=$(echo "$output" | grep -c "\[WARN\]")
-ERROR_COUNT=$(echo "$output" | grep -c "\[ERROR\]")
+WARNING_COUNT=$(echo -e "$output" | grep -c "\[WARN\]")
+ERROR_COUNT=$(echo -e "$output" | grep -c "\[ERROR\]")
 
 if [ "$ERROR_COUNT" -eq 0 ] && [ "$WARNING_COUNT" -eq 0 ]; then
   echo -e "${GREEN}All checks passed! Your Zsh configuration is optimized.${NC}"
