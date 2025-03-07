@@ -1,19 +1,17 @@
 #!/usr/bin/env zsh
-# Minimal macOS zshrc
+# macOS zshrc
 
 export DOTFILES="$HOME/dotfiles"
 export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
 CDPATH=.:$HOME:$HOME/projects:$HOME/code
 
-# Load core configurations in order of dependency
+# Core configuration
 source "$ZSH_CUSTOM_DIR/configs/path.zsh"
 typeset -U PATH
-
-# Set default editor
 export EDITOR='cursor'
 export VISUAL='cursor'
 
-# Load configuration files in specific order
+# Load configuration files
 source "$ZSH_CUSTOM_DIR/configs/history.zsh"
 source "$ZSH_CUSTOM_DIR/configs/options.zsh"
 source "$ZSH_CUSTOM_DIR/configs/completion.zsh"
@@ -24,11 +22,10 @@ source "$ZSH_CUSTOM_DIR/functions.zsh"
 source "$ZSH_CUSTOM_DIR/configs/lazy-load.zsh"
 source "$ZSH_CUSTOM_DIR/configs/macos.zsh"
 
-# Load local configurations
+# Local and secret configurations
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 [[ -f "$ZSH_CUSTOM_DIR/local.zsh" ]] && source "$ZSH_CUSTOM_DIR/local.zsh"
 
-# Load secrets
 if [[ -d "$ZSH_CUSTOM_DIR/secrets" ]]; then
   setopt nullglob
   for secret in "$ZSH_CUSTOM_DIR/secrets"/*.zsh; do

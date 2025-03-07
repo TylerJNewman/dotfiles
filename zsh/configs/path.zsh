@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-#
-# File: path.zsh
-# Purpose: Minimal PATH management
-# Last updated: 2024-03-07
+# PATH management
 
 # Core tool directories
 export NVM_DIR="$HOME/.nvm"
@@ -12,15 +9,12 @@ export BUN_INSTALL="$HOME/.bun"
 
 # PATH additions (highest to lowest priority)
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-export PATH="$HOME/bin:$HOME/dotfiles/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/bin:$HOME/dotfiles/bin:$HOME/.local/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PNPM_HOME:$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export PATH="$PNPM_HOME:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"  # For uv and other Rust tools
 
 # Node modules (lowest priority)
-export PATH="$PATH:./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:../../../node_modules/.bin:../../../../node_modules/.bin"
+export PATH="$PATH:./node_modules/.bin:../node_modules/.bin"
 
 # Function path for completions
 if command -v brew &>/dev/null; then
