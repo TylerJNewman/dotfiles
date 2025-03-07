@@ -35,11 +35,14 @@ source "$ZSH_CUSTOM_DIR/configs/fzf.zsh"
 # 7. Zoxide for directory navigation
 source "$ZSH_CUSTOM_DIR/configs/zoxide.zsh"
 
-# 8. Prompt configuration (Starship with proper quoting)
+# 8. Modern tools configuration
+source "$ZSH_CUSTOM_DIR/configs/modern-tools.zsh"
+
+# 9. Prompt configuration (Starship with proper quoting)
 source "$ZSH_CUSTOM_DIR/configs/starship.zsh"
 source "$ZSH_CUSTOM_DIR/prompt.zsh"
 
-# 9. User customizations
+# 10. User customizations
 source "$ZSH_CUSTOM_DIR/aliases.zsh"
 source "$ZSH_CUSTOM_DIR/functions.zsh"
 source "$ZSH_CUSTOM_DIR/configs/lazy-load.zsh"

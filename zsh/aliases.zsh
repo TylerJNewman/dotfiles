@@ -25,6 +25,7 @@ alias ls="eza --icons"
 alias l="eza -la --icons"
 alias ll="eza -la --icons"
 alias lt="eza -la --tree --level=2 --icons"
+alias llt="eza -lT --level=3 --icons"
 alias find="fd"
 alias grep="rg"
 
