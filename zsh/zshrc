@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Main zshrc file
-# Inspired by Kent C. Dodds' dotfiles
+# Main zshrc file - Minimal and efficient
 
 # Path to dotfiles
 export DOTFILES="$HOME/dotfiles"
@@ -11,9 +10,7 @@ export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
 CDPATH=.:$HOME:$HOME/projects:$HOME/code:$HOME/Desktop
 
 # Load PATH configuration early
-if [ -r "$ZSH_CUSTOM_DIR/configs/path.zsh" ]; then
-  source "$ZSH_CUSTOM_DIR/configs/path.zsh" || echo "Error loading PATH configuration"
-fi
+source "$ZSH_CUSTOM_DIR/configs/path.zsh"
 
 # Set default editor
 if command -v cursor &> /dev/null; then
@@ -30,44 +27,6 @@ fi
 # Set ripgrep config file
 export RIPGREP_CONFIG_PATH="$DOTFILES/config/ripgrep/ripgreprc"
 
-# Load custom modules with error handling
-for file in "$ZSH_CUSTOM_DIR"/*.zsh; do
-  if [ -r "$file" ] && [ "$file" != "$ZSH_CUSTOM_DIR/zshrc" ]; then
-    source "$file" || echo "Error loading $file"
-  fi
-done
-
-# Load specific config files with useful aliases
-if [ -r "$ZSH_CUSTOM_DIR/configs/modern-dev.zsh" ]; then
-  source "$ZSH_CUSTOM_DIR/configs/modern-dev.zsh"
-fi
-
-# Load fixed config files that previously had issues
-if [ -r "$ZSH_CUSTOM_DIR/configs/dev-workflow.zsh" ]; then
-  # Unalias kl before loading to avoid conflicts
-  unalias kl 2>/dev/null || true
-  source "$ZSH_CUSTOM_DIR/configs/dev-workflow.zsh" || echo "Error loading $ZSH_CUSTOM_DIR/configs/dev-workflow.zsh"
-fi
-
-if [ -r "$ZSH_CUSTOM_DIR/configs/productivity.zsh" ]; then
-  # Unalias gcob before loading to avoid conflicts
-  unalias gcob 2>/dev/null || true
-  source "$ZSH_CUSTOM_DIR/configs/productivity.zsh" || echo "Error loading $ZSH_CUSTOM_DIR/configs/productivity.zsh"
-fi
-
-# Load other subdirectory modules safely
-for dir in "$ZSH_CUSTOM_DIR"/*/ ; do
-  if [ -d "$dir" ] && [[ "$dir" != *"configs"* ]]; then
-    for file in "$dir"*.zsh; do
-      # Skip if the pattern didn't match any files
-      [[ -e "$file" ]] || continue
-      
-      # Source the file with error handling
-      source "$file" || echo "Error loading $file"
-    done
-  fi
-done
-
 # History configuration
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
@@ -82,63 +41,18 @@ setopt HIST_SAVE_NO_DUPS
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_REDUCE_BLANKS
 
-# Set up Zinit if available
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-if [[ ! -d $ZINIT_HOME ]]; then
-  mkdir -p "$(dirname $ZINIT_HOME)"
-  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
+# Load core configuration files in specific order
+core_files=(
+  "$ZSH_CUSTOM_DIR/prompt.zsh"
+  "$ZSH_CUSTOM_DIR/configs/plugins.zsh"
+  "$ZSH_CUSTOM_DIR/aliases.zsh"
+  "$ZSH_CUSTOM_DIR/functions.zsh"
+  "$ZSH_CUSTOM_DIR/configs/lazy-load.zsh"
+)
 
-source "${ZINIT_HOME}/zinit.zsh"
-
-# Load plugins with Zinit
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-history-substring-search
-zinit light zdharma-continuum/fast-syntax-highlighting
-
-# Source custom files
-source "$DOTFILES/zsh/functions.zsh"
-source "$DOTFILES/zsh/aliases.zsh"
-source "$DOTFILES/zsh/prompt.zsh"
-
-# Load completions
-autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
-# Set up key bindings
-bindkey -e  # Use emacs key bindings
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey '^[[H' beginning-of-line
-bindkey '^[[F' end-of-line
-bindkey '^[[3~' delete-char
-bindkey '^[[1;5C' forward-word
-bindkey '^[[1;5D' backward-word
-
-# Load nvm if available
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Load pyenv if available
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-# Load rbenv if available
-if command -v rbenv 1>/dev/null 2>&1; then
-  eval "$(rbenv init -)"
-fi
-
-# Load direnv if available
-if command -v direnv 1>/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
+for file in "${core_files[@]}"; do
+  [[ -r "$file" ]] && source "$file"
+done
 
 # Load local configuration if available
-[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
-
-# Set a random emoji for the prompt (silently)
-PROMPT_EMOJI=$(setRandomEmoji) 
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local" 
