@@ -5,6 +5,7 @@
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias deleteDSFiles="find . -name '.DS_Store' -type f -delete"  # Alternative DS_Store cleanup
 
 # System
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
@@ -29,4 +30,7 @@ fi
 # Apps
 alias chrome="open -a 'Google Chrome'"
 alias vscode="open -a 'Visual Studio Code'"
-alias cursor="open -a 'Cursor'" 
+alias cursor="open -a 'Cursor'"
+
+# Development directories
+alias code="cd ~/code"  # Navigate to code directory (alternative to 'd' which conflicts with docker) 

@@ -9,6 +9,7 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias ~="cd ~"
 alias -- -="cd -"
+alias ..l="cd ../ && ll"  # Go up one level and list files
 
 # Shortcuts
 alias dl="cd ~/Downloads"
@@ -28,6 +29,9 @@ alias lt="eza -la --tree --level=2 --icons"
 alias llt="eza -lT --level=3 --icons"
 alias find="fd"
 alias grep="rg"
+
+# Fuzzy finder integration
+alias fz="ls | fzf | xargs code"  # Fuzzy find files and open in code
 
 # Git
 alias gs="git status"
@@ -49,6 +53,7 @@ alias ns="npm start"
 alias nt="npm test"
 alias nr="npm run"
 alias flush-npm="rm -rf node_modules package-lock.json && npm i"
+alias check-nodemon="ps aux | grep -i '.bin/nodemon'"  # Check running nodemon processes
 
 # yarn
 alias yi="yarn install"
@@ -86,6 +91,7 @@ alias ke="kubectl exec -it"
 
 # System
 alias reload="source ~/.zshrc"
+alias dont_index_node_modules='find . -type d -name "node_modules" -exec touch "{}/.metadata_never_index" \;'
 
 # Python
 alias python=python3
