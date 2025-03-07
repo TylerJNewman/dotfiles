@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
-# macOS zshrc
+# macOS zshrc - Optimized for 2025 recommended Zsh setup
+# Last updated: 2025
 
 export DOTFILES="$HOME/dotfiles"
 export ZSH_CUSTOM_DIR="$DOTFILES/zsh"
@@ -11,13 +12,34 @@ typeset -U PATH
 export EDITOR='cursor'
 export VISUAL='cursor'
 
-# Load configuration files
-source "$ZSH_CUSTOM_DIR/configs/history.zsh"
+# Load configuration files in optimal order
+# 1. Basic options and history first
 source "$ZSH_CUSTOM_DIR/configs/options.zsh"
+source "$ZSH_CUSTOM_DIR/configs/history.zsh"
+
+# 2. Completion system (before plugins)
 source "$ZSH_CUSTOM_DIR/configs/completion.zsh"
-source "$ZSH_CUSTOM_DIR/prompt.zsh"
+
+# 3. Key bindings (before plugins to reset potential conflicts)
+source "$ZSH_CUSTOM_DIR/configs/keybindings.zsh"
+
+# 4. Syntax highlighting configuration (before loading the plugin)
+source "$ZSH_CUSTOM_DIR/configs/syntax-highlighting.zsh"
+
+# 5. Plugins (with proper ordering internally)
 source "$ZSH_CUSTOM_DIR/configs/plugins.zsh"
+
+# 6. FZF configuration (after plugins, for fzf-tab integration)
 source "$ZSH_CUSTOM_DIR/configs/fzf.zsh"
+
+# 7. Zoxide for directory navigation
+source "$ZSH_CUSTOM_DIR/configs/zoxide.zsh"
+
+# 8. Prompt configuration (Starship with proper quoting)
+source "$ZSH_CUSTOM_DIR/configs/starship.zsh"
+source "$ZSH_CUSTOM_DIR/prompt.zsh"
+
+# 9. User customizations
 source "$ZSH_CUSTOM_DIR/aliases.zsh"
 source "$ZSH_CUSTOM_DIR/functions.zsh"
 source "$ZSH_CUSTOM_DIR/configs/lazy-load.zsh"

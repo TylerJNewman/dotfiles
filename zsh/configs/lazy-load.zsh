@@ -3,7 +3,21 @@
 # File: lazy-load.zsh
 # Purpose: Minimal lazy loading for performance-heavy tools
 
-# Generic lazy loading function
+# Safe wrapper for zsh-defer to prevent race conditions
+defer_fn() {
+  emulate -L zsh
+  local fn=$1
+  
+  # Only use zsh-defer if it's available
+  if (( $+functions[zsh-defer] )); then
+    zsh-defer -c "$fn"
+  else
+    # Fallback to direct execution if zsh-defer isn't available
+    eval "$fn"
+  fi
+}
+
+# Generic lazy loading function for commands
 function lazy_load() {
   local load_cmd=$1
   local cmd_name=$2
@@ -17,7 +31,8 @@ function lazy_load() {
 
 # Lazy load NVM
 if [[ -d "$NVM_DIR" ]]; then
-  lazy_load "source \"$NVM_DIR/nvm.sh\"" "nvm"
+  # Use defer_fn for NVM initialization
+  defer_fn 'source "$NVM_DIR/nvm.sh"'
   
   # Create node/npm/npx shims
   for cmd in node npm npx; do
@@ -31,20 +46,20 @@ fi
 
 # Lazy load Bun
 if [[ -d "$BUN_INSTALL" ]]; then
-  lazy_load "[ -s \"$BUN_INSTALL/_bun\" ] && source \"$BUN_INSTALL/_bun\"" "bun"
+  defer_fn '[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"'
 fi
 
 # Lazy load pyenv if installed
 if command -v pyenv &>/dev/null; then
-  lazy_load "eval \"\$(pyenv init -)\"" "pyenv"
+  defer_fn 'eval "$(pyenv init -)"'
 fi
 
 # Lazy load rbenv if installed
 if command -v rbenv &>/dev/null; then
-  lazy_load "eval \"\$(rbenv init -)\"" "rbenv"
+  defer_fn 'eval "$(rbenv init -)"'
 fi
 
 # Lazy load direnv if installed
 if command -v direnv &>/dev/null; then
-  lazy_load "eval \"\$(direnv hook zsh)\"" "direnv"
+  defer_fn 'eval "$(direnv hook zsh)"'
 fi 

@@ -63,6 +63,66 @@ dotfiles/
 └── README.md             # This file
 ```
 
+## Optimized Zsh Setup (2025 Edition)
+
+This repository includes carefully crafted Zsh configurations that combine the best tools available in 2025. We offer two approaches to suit different preferences:
+
+### Option 1: Zinit-based Setup (More Customizable)
+
+Our Zinit-based setup provides granular control and extensive customization options:
+
+#### Key Components
+
+- **zsh-completions** - Rich completion definitions
+- **fzf-tab** - Fuzzy completion menu using fzf
+- **zsh-autosuggestions** - Fish-like history suggestions as you type
+- **fast-syntax-highlighting** - Command syntax highlighting
+- **zoxide** - Smart directory jumping
+- **fzf** - General-purpose fuzzy finder with keybindings
+- **starship** - Cross-shell prompt with minimal configuration
+
+#### Installation
+
+```bash
+# Run the installation script
+./zsh/install-zsh-tools.sh
+```
+
+For more details, see the [Zsh Configuration README](zsh/configs/README.md).
+
+### Option 2: Zim-based Setup (Faster & Simpler)
+
+Our Zim-based setup offers blazing speed with a simpler configuration:
+
+#### Key Components
+
+- **Zim Framework** - Lightweight alternative to Oh-My-Zsh
+- **zsh-autosuggestions** - Fish-like history suggestions
+- **fast-syntax-highlighting** - Command syntax highlighting
+- **fzf-tab** - Fuzzy completion menu
+- **zoxide** - Smart directory jumping
+- **starship** - Cross-shell prompt
+
+#### Installation
+
+```bash
+# Run the installation script
+./zsh/install-zim-setup.sh
+```
+
+This setup achieves startup times of 50-100ms while maintaining all essential features.
+
+For more details, see the [Zim Setup Guide](zsh/ZIM-SETUP.md).
+
+### Starship Configuration
+
+Both setups include a properly configured Starship prompt that works reliably on macOS:
+
+- **Proper Initialization**: Uses correctly quoted eval statement to avoid macOS issues
+- **Minimal Design**: Shows only essential information for a clean interface
+- **Performance Optimized**: Includes cache configuration for better performance
+- **Cross-Shell Compatible**: Works with Zsh, Bash, Fish, and other shells
+
 ## Guiding Principles
 
 1. **Simplicity**: Keep configurations simple and easy to understand
@@ -350,130 +410,4 @@ Here are some recommended enhancements to further improve your development envir
 If you see boxes, question marks, or missing symbols in your prompt:
 
 1. Verify a Nerd Font is installed:
-   ```bash
-   ls ~/Library/Fonts/*Nerd* || ls /Library/Fonts/*Nerd*
    ```
-
-2. Configure your terminal to use the Nerd Font:
-   - **iTerm2**: Preferences → Profiles → Text → Font → Change Font
-   - **VS Code**: Settings → Terminal › Integrated: Font Family → Add a Nerd Font (e.g., "Hack Nerd Font")
-
-#### Slow Shell Startup
-
-If your shell is starting slowly:
-
-1. Profile your startup time:
-   ```bash
-   time zsh -i -c exit
-   ```
-
-2. Identify slow plugins or configurations:
-   ```bash
-   # Add to top of .zshrc
-   zmodload zsh/zprof
-   
-   # Add to bottom of .zshrc
-   zprof
-   ```
-
-3. Consider lazy-loading rarely used tools or disabling unused plugins
-
-#### Tool Version Mismatches
-
-If you see version warnings during installation:
-
-1. Update the specific tool:
-   ```bash
-   # For Homebrew packages
-   brew upgrade [package-name]
-   
-   # For Starship
-   curl -sS https://starship.rs/install.sh | sh
-   ```
-
-2. If you can't update, check if your configuration is compatible with your current version
-
-## Performance Optimizations
-
-This dotfiles repository includes several performance optimizations to improve shell startup time:
-
-### Lazy Loading
-
-Many tools are lazy loaded, meaning they are only initialized when actually needed. This significantly improves shell startup time. The following tools are lazy loaded:
-
-- **NVM (Node Version Manager)** - Only loaded when Node.js commands are used
-- **Zoxide** - Only loaded when directory jumping commands are used
-- **GitHub Copilot** - Only loaded when Copilot commands are used
-- **Atuin** - Only loaded when history commands are used
-- **Google Cloud SDK** - Only loaded when gcloud commands are used
-- **Deno** - Only loaded when Deno commands are used
-- **Bun** - Only loaded when Bun commands are used
-- **FZF** - Only loaded when fuzzy finding is used
-- **Docker** - Only loaded when Docker commands are used
-- **Docker Compose** - Only loaded when Docker Compose commands are used
-
-See `zsh/configs/lazy-tools.zsh` and `zsh/configs/nvm-lazy.zsh` for implementation details.
-
-### Fast Syntax Highlighting
-
-This configuration uses `fast-syntax-highlighting` instead of the standard `zsh-syntax-highlighting` for significantly improved performance:
-
-- Up to 50x faster than standard syntax highlighting
-- More advanced highlighting features
-- Reduced impact on shell startup time
-- Better performance during interactive use
-
-To install fast-syntax-highlighting, run:
-
-```bash
-./bin/install-fast-syntax-highlighting.sh
-```
-
-### Performance Measurement
-
-The repository includes tools to measure and optimize shell performance:
-
-- `zsh-time` - Measures shell startup time
-- `zsh-profile` - Profiles zsh startup using zprof
-- `zsh-debug` - Toggles debug mode for shell startup
-
-These commands are available after sourcing `zsh/functions/performance.zsh`.
-
-## Utility Scripts
-
-This repository includes several utility scripts to help you maintain and optimize your dotfiles:
-
-### Shell Optimization
-
-- `bin/measure-startup-time.sh`: Measures your shell startup time and provides optimization recommendations
-- `bin/optimize-shell.sh`: Automatically applies optimizations to improve shell startup time
-- `bin/test-lazy-loading.sh`: Tests the impact of lazy loading on shell startup time
-
-### Development Tools
-
-- `bin/lint-scripts.sh`: Lints shell scripts for errors and style issues using shellcheck and shfmt
-- `bin/install-git-hooks.sh`: Installs git hooks for the repository
-- `bin/install-modern-tools.sh`: Installs modern replacements for common command-line tools
-- `bin/switch-to-zinit.sh`: Migrates from Oh My Zsh to Zinit for faster shell startup
-
-## Maintenance
-
-To ensure your dotfiles remain well-maintained:
-
-1. Run `bin/measure-startup-time.sh` periodically to check shell performance
-2. Use `bin/lint-scripts.sh` before committing changes to ensure code quality
-3. Keep your tools updated with `brew upgrade` regularly
-4. Review and clean up unused aliases and functions periodically
-5. Run `bin/cleanup.sh` before committing to perform all maintenance tasks automatically
-
-### Cleanup Script
-
-The `bin/cleanup.sh` script automates the cleanup process by:
-
-- Removing temporary files (*.swp, *~, _tmp_*)
-- Ensuring all scripts have proper executable permissions
-- Verifying configuration files are properly formatted
-- Running linting tools to check for issues
-- Measuring shell startup time
-
-Run it before committing changes to ensure your dotfiles repository remains clean and well-maintained.

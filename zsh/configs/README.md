@@ -1,164 +1,177 @@
-# ZSH Configuration Files
+# Optimized Zsh Configuration for 2025
 
-This directory contains modular ZSH configuration files that are loaded by the main `.zshrc` file.
+This directory contains a carefully organized set of Zsh configuration files designed to work together harmoniously, following the best practices recommended for 2025.
 
-## Simplified Structure
+## Key Components
 
-To improve maintainability and readability, we've organized the configuration files into these categories:
+Our setup combines these powerful tools in a complementary way:
 
-1. **Core Settings**
-   - `path.zsh` - PATH and environment variable configuration
-   - `theme.zsh` - Terminal appearance settings
-
-2. **Tool Configuration**
-   - `tools.zsh` - Basic development tool configuration
-   - `dev-workflow.zsh` - Development workflow enhancements
-   - `productivity.zsh` - Productivity tools and functions
-
-3. **Performance Optimization**
-   - `lazy-tools.zsh` - Lazy loading for better shell startup time
-   - `nvm-lazy.zsh` - Optimized Node.js version manager loading
-
-## Adding New Configurations
-
-When adding new configurations:
-
-1. Decide which category your configuration belongs to
-2. If it fits in an existing file, add it there
-3. If it needs a new file, follow the naming convention: `purpose.zsh`
-4. Add a clear header comment explaining the file's purpose
-5. Group related settings together with section comments
-
-## Best Practices
-
-- Keep files small and focused on a single purpose
-- Use comments to explain non-obvious configurations
-- Avoid duplicating functionality across files
-- Test changes to ensure they don't slow down shell startup
-- Run `bin/measure-startup-time.sh` to check performance impact
-
-## Avoiding Alias Conflicts
-
-When defining functions, be careful about conflicts with existing aliases:
-
-1. **Check for existing aliases** before defining a function with the same name
-   ```bash
-   # Bad: Will cause errors if 'kl' is already an alias
-   kl() {
-     kubectl logs -f "$1"
-   }
-   
-   # Good: Use a different name to avoid conflicts
-   kube_logs() {
-     kubectl logs -f "$1"
-   }
-   ```
-
-2. **Use the `command` prefix** when calling commands that might be aliased
-   ```bash
-   # Bad: Will cause errors if 'git' is aliased
-   function branch_checkout() {
-     git checkout "$1"
-   }
-   
-   # Good: Use 'command' to bypass aliases
-   function branch_checkout() {
-     command git checkout "$1"
-   }
-   ```
-
-3. **Use the explicit `function` keyword** for function definitions
-   ```bash
-   # Good: Explicit function declaration
-   function my_function() {
-     # function body
-   }
-   ```
+1. **zsh-completions** - Rich completion definitions
+2. **fzf-tab** - Fuzzy completion menu using fzf
+3. **zsh-autosuggestions** - Fish-like history suggestions as you type
+4. **fast-syntax-highlighting** - Command syntax highlighting (faster alternative to zsh-syntax-highlighting)
+5. **zoxide** - Smart directory jumping (modern alternative to z/autojump)
+6. **fzf** - General-purpose fuzzy finder with keybindings
+7. **starship** - Cross-shell prompt with minimal configuration
 
 ## Loading Order
 
-Files are loaded in alphabetical order by the main `.zshrc` file. If you need to control loading order, prefix filenames with numbers (e.g., `01-path.zsh`, `02-theme.zsh`).
+The loading order is critical for these tools to work together without conflicts:
 
-## Lazy Loading Implementation
+1. **Basic options and history** - Loaded first (`options.zsh`, `history.zsh`)
+2. **Completion system** - Loaded before plugins (`completion.zsh`)
+3. **Plugins** - Loaded in specific order:
+   - zsh-completions (before compinit)
+   - fzf-tab (after compinit, but before other TAB-binding widgets)
+   - zsh-autosuggestions
+   - fast-syntax-highlighting
+4. **FZF configuration** - Loaded after plugins for proper integration with fzf-tab
+5. **Zoxide** - Loaded after plugins to avoid conflicts
+6. **Starship** - Loaded with proper quoting to avoid macOS issues
+7. **Prompt** - Additional prompt customization if needed
+8. **User customizations** - Aliases, functions, and other user-specific settings
 
-The following tools are now lazy loaded:
+## Key Features
 
-1. **NVM (Node Version Manager)** - Implemented in `nvm-lazy.zsh`
-   - Loads NVM only when `node`, `npm`, `npx`, `yarn`, or `pnpm` commands are used
-   - Automatically detects and uses `.nvmrc` files when changing directories
+### Fuzzy Completion with fzf-tab
 
-2. **Various Tools** - Implemented in `lazy-tools.zsh`
-   - **Zoxide** - Loads only when `z` or `zi` commands are used
-   - **GitHub Copilot** - Loads only when `gh-copilot` command is used
-   - **Atuin** - Loads only when `atuin` command is used or Ctrl+R is pressed
-   - **Google Cloud SDK** - Loads only when `gcloud`, `gsutil`, or `bq` commands are used
-   - **Deno** - Loads only when `deno` command is used
-   - **Bun** - Loads only when `bun` or `bunx` commands are used
-   - **FZF** - Loads only when `fzf` command is used
-   - **Docker** - Loads only when `docker` command is used
-   - **Docker Compose** - Loads only when `docker-compose` command is used
+The TAB key now brings up a fuzzy-searchable menu of completions, powered by fzf. This works for commands, files, directories, and more.
 
-## Performance Measurement
+### Smart Directory Navigation with zoxide
 
-Performance measurement tools are available in `../functions/performance.zsh`:
+Zoxide tracks your most frequently used directories and allows you to jump to them with the `z` command:
 
-- `zsh-time` - Measures shell startup time
-- `zsh-profile` - Profiles zsh startup using zprof
-- `zsh-debug` - Toggles debug mode for shell startup
+- `z project` - Jump to your most frequently used directory containing "project"
+- `zi` - Interactive selection with fzf
+- `zl` - List frequently visited directories
+- `zp` - Jump to a directory with fzf preview
 
-## Fast Syntax Highlighting
+### FZF Keybindings
 
-This configuration uses `fast-syntax-highlighting` instead of the standard `zsh-syntax-highlighting` for significantly improved performance:
+- `Ctrl+R` - Fuzzy search through command history
+- `Ctrl+T` - Fuzzy find files in current directory
+- `Alt+C` - Fuzzy find and cd into subdirectories
 
-- Up to 50x faster than standard syntax highlighting
-- More advanced highlighting features
-- Reduced impact on shell startup time
-- Better performance during interactive use
+### Command History Suggestions
 
-### Installation
+As you type, you'll see suggestions from your command history in a subtle gray color. Press the right arrow key to accept a suggestion.
 
-To install fast-syntax-highlighting, run:
+### Syntax Highlighting
+
+Commands are highlighted as you type, showing errors in red and valid commands in green.
+
+### Modern Cross-Shell Prompt with Starship
+
+Starship provides a beautiful, informative prompt with minimal configuration:
+
+- Shows current directory and git status
+- Displays command execution time for long-running commands
+- Changes prompt character color based on last command status
+- Works across different shells (Zsh, Bash, Fish, etc.)
+
+## Installation
+
+### Prerequisites
+
+- Zsh (v5.8 or later recommended)
+- git
+- fzf
+- zoxide
+- Zinit (for plugin management)
+- Starship (for the prompt)
+
+### Installing Zinit
 
 ```bash
-./bin/install-fast-syntax-highlighting.sh
+bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
 ```
 
-This will:
-1. Back up your existing zsh-syntax-highlighting installation
-2. Clone the fast-syntax-highlighting repository
-3. Update your zshrc to use fast-syntax-highlighting
+### Installing fzf
 
-## How Lazy Loading Works
+```bash
+# macOS
+brew install fzf
+$(brew --prefix)/opt/fzf/install
 
-Lazy loading works by defining shell functions with the same names as the commands they replace. When a command is first invoked, the function:
+# Ubuntu/Debian
+sudo apt install fzf
 
-1. Removes itself and any related functions
-2. Loads the actual tool
-3. Executes the original command with the provided arguments
+# Arch Linux
+sudo pacman -S fzf
+```
 
-This approach significantly improves shell startup time by deferring the loading of tools until they are actually needed.
+### Installing zoxide
+
+```bash
+# macOS
+brew install zoxide
+
+# Ubuntu/Debian
+sudo apt install zoxide
+
+# Using cargo
+cargo install zoxide
+```
+
+### Installing Starship
+
+```bash
+# macOS (recommended for macOS users)
+brew install starship
+
+# All platforms
+curl -sS https://starship.rs/install.sh | sh
+```
+
+## Performance Considerations
+
+This configuration is designed to be fast and efficient:
+
+- Uses `fast-syntax-highlighting` instead of `zsh-syntax-highlighting` for better performance
+- Loads plugins with `wait lucid` where appropriate to improve startup time
+- Optimizes completion system to rebuild cache only once a day
+- Uses zoxide which is faster than traditional directory jumpers
 
 ## Customization
 
-To add lazy loading for additional tools, follow the pattern in `lazy-tools.zsh`. The general approach is:
+You can customize this setup by:
 
-```zsh
-# Lazy load example-tool
-if command -v example-tool &> /dev/null; then
-  function __example_tool_load() {
-    unfunction example-tool related-command
-    # Load the tool
-    eval "$(example-tool init)"
-  }
-  
-  function example-tool() {
-    __example_tool_load
-    example-tool "$@"
-  }
-  
-  function related-command() {
-    __example_tool_load
-    related-command "$@"
-  }
-fi
-``` 
+1. Modifying `fzf.zsh` to change FZF options and keybindings
+2. Adjusting `zoxide.zsh` to customize directory jumping behavior
+3. Editing `completion.zsh` to fine-tune completion behavior
+4. Adding or removing plugins in `plugins.zsh`
+5. Customizing `starship.toml` to change your prompt appearance
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. **Completion not working**: Ensure compinit is called before fzf-tab but after zsh-completions
+2. **Key bindings conflicts**: Check for duplicate key bindings in your configuration
+3. **Slow startup**: Use `zprof` to profile your Zsh startup time and identify bottlenecks
+4. **Plugin conflicts**: Adjust the loading order in `plugins.zsh`
+5. **Starship not working on macOS**: Ensure the eval statement is properly quoted as in our `starship.zsh` file
+
+### Fixing Starship Issues on macOS
+
+Some users have reported issues with Starship not working correctly on macOS with Zsh. Our configuration addresses this by:
+
+1. Using proper quoting in the eval statement: `eval "$(starship init zsh)"`
+2. Installing Starship via Homebrew on macOS for better integration
+3. Creating the necessary configuration directories
+4. Setting up a cache directory to improve performance
+
+If you still encounter issues, try:
+- Ensuring your terminal is using a compatible font (preferably a Nerd Font)
+- Checking that your `TERM` environment variable is set correctly
+- Verifying that Starship is in your PATH
+
+## References
+
+- [Zinit Documentation](https://github.com/zdharma-continuum/zinit)
+- [fzf-tab Documentation](https://github.com/Aloxaf/fzf-tab)
+- [zoxide Documentation](https://github.com/ajeetdsouza/zoxide)
+- [FZF Documentation](https://github.com/junegunn/fzf)
+- [zsh-autosuggestions Documentation](https://github.com/zsh-users/zsh-autosuggestions)
+- [fast-syntax-highlighting Documentation](https://github.com/zdharma-continuum/fast-syntax-highlighting)
+- [Starship Documentation](https://starship.rs/guide/) 
