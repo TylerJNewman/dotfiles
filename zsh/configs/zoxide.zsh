@@ -28,6 +28,8 @@ eval "$(zoxide init zsh)"
 # Aliases for zoxide
 alias cd="z"      # Replace cd with z for smart directory jumping
 alias cdi="zi"    # Interactive selection with fzf
+alias j="z"       # Quick jump to directory using zoxide
+alias jj="zi"     # Interactive jump with fuzzy finder
 
 # Add current directory to zoxide database when changing directory
 function chpwd() {
