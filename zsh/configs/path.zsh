@@ -22,12 +22,10 @@ export PATH="$HOME/.cargo/bin:$PATH"  # For uv and other Rust tools
 # Node modules (lowest priority)
 export PATH="$PATH:./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:../../../node_modules/.bin:../../../../node_modules/.bin"
 
-# Remove duplicates
-typeset -U PATH
+# Function path for completions
+if command -v brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+fi
 
-# Helper aliases
+# Helper for viewing PATH
 alias path='echo -e ${PATH//:/\\n}'
-alias python=python3
-
-# Use standard pip for compatibility
-alias pip=pip3

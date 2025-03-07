@@ -154,4 +154,8 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
-alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder" 
+alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+
+# Python
+alias python=python3
+alias pip=pip3 
