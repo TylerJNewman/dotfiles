@@ -12,6 +12,20 @@ if [[ -d "$ZINIT_HOME" ]]; then
   # Load essential plugins only
   zinit light zsh-users/zsh-autosuggestions
   zinit light zdharma-continuum/fast-syntax-highlighting
+  zinit light zsh-users/zsh-completions
+  zinit light zsh-users/zsh-history-substring-search
+  zinit light Aloxaf/fzf-tab
+  
+  # z - jump around
+  zinit ice wait lucid
+  zinit light agkozak/zsh-z
+  
+  # Git plugin from Oh My Zsh
+  zinit snippet OMZ::plugins/git/git.plugin.zsh
+  
+  # Configure history-substring-search
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
 else
   # Fallback for basic functionality if Zinit isn't installed
   # Enable basic autocompletion
