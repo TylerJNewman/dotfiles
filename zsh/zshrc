@@ -38,13 +38,33 @@ for file in "$ZSH_CUSTOM_DIR"/*.zsh; do
   fi
 done
 
-# Load custom modules from subdirectories
+# Load specific config files with useful aliases
+if [ -r "$ZSH_CUSTOM_DIR/configs/modern-dev.zsh" ]; then
+  source "$ZSH_CUSTOM_DIR/configs/modern-dev.zsh"
+fi
+
+# Load fixed config files that previously had issues
+if [ -r "$ZSH_CUSTOM_DIR/configs/dev-workflow.zsh" ]; then
+  # Unalias kl before loading to avoid conflicts
+  unalias kl 2>/dev/null || true
+  source "$ZSH_CUSTOM_DIR/configs/dev-workflow.zsh" || echo "Error loading $ZSH_CUSTOM_DIR/configs/dev-workflow.zsh"
+fi
+
+if [ -r "$ZSH_CUSTOM_DIR/configs/productivity.zsh" ]; then
+  # Unalias gcob before loading to avoid conflicts
+  unalias gcob 2>/dev/null || true
+  source "$ZSH_CUSTOM_DIR/configs/productivity.zsh" || echo "Error loading $ZSH_CUSTOM_DIR/configs/productivity.zsh"
+fi
+
+# Load other subdirectory modules safely
 for dir in "$ZSH_CUSTOM_DIR"/*/ ; do
-  if [ -d "$dir" ]; then
+  if [ -d "$dir" ] && [[ "$dir" != *"configs"* ]]; then
     for file in "$dir"*.zsh; do
-      if [ -r "$file" ]; then
-        source "$file" || echo "Error loading $file"
-      fi
+      # Skip if the pattern didn't match any files
+      [[ -e "$file" ]] || continue
+      
+      # Source the file with error handling
+      source "$file" || echo "Error loading $file"
     done
   fi
 done
