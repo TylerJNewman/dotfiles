@@ -92,7 +92,7 @@ alias ke="kubectl exec -it"
 
 # System
 alias reload="source ~/.zshrc"
-alias dont-index-node-modules='find . -type d -name "node_modules" -exec touch "{}/.metadata_never_index" \;'
+alias dont-index-node-modules='fd -t d "node_modules$" -x touch "{}/.metadata_never_index" \;'
 
 # Python
 alias python=python3

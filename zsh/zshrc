@@ -37,6 +37,7 @@ source "$ZSH_CUSTOM_DIR/configs/zoxide.zsh"
 
 # 8. Modern tools configuration
 source "$ZSH_CUSTOM_DIR/configs/modern-tools.zsh"
+source "$ZSH_CUSTOM_DIR/configs/modern-search.zsh"
 
 # 9. Prompt configuration (Starship with proper quoting)
 source "$ZSH_CUSTOM_DIR/configs/starship.zsh"

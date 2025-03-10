@@ -22,7 +22,7 @@ alias ports="netstat -tulanp"
 
 # Process management
 alias psa="ps aux"
-alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
+alias psg="ps aux | rg -v rg | rg -i"
 
 # Package management - detect distro automatically
 if command -v apt &>/dev/null; then

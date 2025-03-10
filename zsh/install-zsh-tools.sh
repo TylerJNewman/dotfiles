@@ -422,6 +422,59 @@ install_bat() {
   fi
 }
 
+# Install ripgrep (improved grep, used for searching)
+install_ripgrep() {
+  section "Installing ripgrep (Improved grep command)"
+  
+  if command_exists rg; then
+    info "ripgrep is already installed: $(rg --version)"
+  else
+    info "Installing ripgrep..."
+    
+    case "$OS" in
+      macos)
+        brew install ripgrep
+        ;;
+      linux)
+        case "$DISTRO" in
+          debian)
+            sudo apt update
+            sudo apt install -y ripgrep
+            ;;
+          arch)
+            sudo pacman -S --noconfirm ripgrep
+            ;;
+          fedora)
+            sudo dnf install -y ripgrep
+            ;;
+          *)
+            # Generic installation method using cargo
+            if command_exists cargo; then
+              cargo install ripgrep
+            else
+              warning "Cargo not found. Please install Rust and Cargo, then run: cargo install ripgrep"
+            fi
+            ;;
+        esac
+        ;;
+      *)
+        # Generic installation method using cargo
+        if command_exists cargo; then
+          cargo install ripgrep
+        else
+          warning "Cargo not found. Please install Rust and Cargo, then run: cargo install ripgrep"
+        fi
+        ;;
+    esac
+    
+    if command_exists rg; then
+      info "ripgrep installed successfully: $(rg --version)"
+    else
+      warning "ripgrep installation may have failed. Please install manually."
+    fi
+  fi
+}
+
 # Main function
 main() {
   section "Starting Zsh Tools Installation"
@@ -440,10 +493,11 @@ main() {
   install_zoxide
   install_starship
   install_fd
+  install_ripgrep
   install_bat
   
   section "Installation Complete!"
-  info "Please restart your shell or run 'source ~/.zshrc' to apply changes."
+  info "Please restart your shell or run 'exec zsh' to apply changes."
   info "For more information, see the README.md file in the zsh/configs directory."
 }
 

@@ -466,6 +466,59 @@ install_bat() {
   fi
 }
 
+# Install ripgrep (improved grep)
+install_ripgrep() {
+  section "Installing ripgrep (Improved grep command)"
+  
+  if command_exists rg; then
+    info "ripgrep is already installed: $(rg --version)"
+  else
+    info "Installing ripgrep..."
+    
+    case "$OS" in
+      macos)
+        brew install ripgrep
+        ;;
+      linux)
+        case "$DISTRO" in
+          debian)
+            sudo apt update
+            sudo apt install -y ripgrep
+            ;;
+          arch)
+            sudo pacman -S --noconfirm ripgrep
+            ;;
+          fedora)
+            sudo dnf install -y ripgrep
+            ;;
+          *)
+            # Generic installation method using cargo
+            if command_exists cargo; then
+              cargo install ripgrep
+            else
+              warning "Cargo not found. Please install Rust and Cargo, then run: cargo install ripgrep"
+            fi
+            ;;
+        esac
+        ;;
+      *)
+        # Generic installation method using cargo
+        if command_exists cargo; then
+          cargo install ripgrep
+        else
+          warning "Cargo not found. Please install Rust and Cargo, then run: cargo install ripgrep"
+        fi
+        ;;
+    esac
+    
+    if command_exists rg; then
+      info "ripgrep installed successfully: $(rg --version)"
+    else
+      warning "ripgrep installation may have failed. Please install manually."
+    fi
+  fi
+}
+
 # Create zshrc file
 create_zshrc() {
   section "Creating Zsh Configuration"
@@ -541,9 +594,9 @@ alias ls="eza --icons"
 alias ll="eza -la --icons"
 alias la="eza -a --icons"
 alias l="eza -l --icons"
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+# Modern search tools
+alias grep="rg"      # Use ripgrep for faster text searching
+alias find="fd"      # Use fd for faster file finding
 alias cd="z"      # Replace cd with z for smart directory jumping
 alias zi="zoxide query -i --exclude \$PWD"  # Interactive selection with fzf
 
@@ -585,6 +638,7 @@ main() {
   install_zoxide
   install_fzf
   install_fd
+  install_ripgrep
   install_bat
   create_zshrc
   

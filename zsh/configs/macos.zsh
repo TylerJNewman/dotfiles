@@ -4,13 +4,13 @@
 # Finder
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias cleanup="fd -e DS_Store -H -x rm {}"
 
 # System
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
-alias cpu="top -l 1 -s 0 | grep 'CPU usage'"
-alias mem="top -l 1 -s 0 | grep PhysMem"
-alias battery="pmset -g batt | grep -E '([0-9]+\%).*' -o"
+alias cpu="top -l 1 -s 0 | rg 'CPU usage'"
+alias mem="top -l 1 -s 0 | rg PhysMem"
+alias battery="pmset -g batt | rg -E '([0-9]+\%).*' -o"
 alias ql="qlmanage -p &>/dev/null"
 
 # Network
