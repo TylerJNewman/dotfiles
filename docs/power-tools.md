@@ -91,4 +91,116 @@ These are the tools you'll likely use dozens of times daily:
 3. **Learn visualization tools** (eza and bat) - These improve how you view content
 4. **Finally, learn workflow tools** (git and docker aliases) - These streamline complex tasks
 
-Each of these tools has excellent documentation and many more features than listed here, but mastering just these few commands for each tool will dramatically improve your command line efficiency. 
+Each of these tools has excellent documentation and many more features than listed here, but mastering just these few commands for each tool will dramatically improve your command line efficiency.
+
+## Addendum: Common Flags for the `fd` Command
+
+The `fd` command is a modern alternative to `find`. Here are the most useful flags you'll use regularly:
+
+### Type Filters
+- `-t d` or `--type directory`: Find only directories
+- `-t f` or `--type file`: Find only files
+- `-t l` or `--type symlink`: Find only symbolic links
+- `-t x` or `--type executable`: Find only executable files
+
+### Search Scope Control
+- `-H` or `--hidden`: Include hidden files and directories
+- `-I` or `--no-ignore`: Include files/directories ignored by `.gitignore`
+- `-g PATTERN` or `--glob PATTERN`: Filter results using a glob pattern
+- `--max-depth N`: Limit search depth to N levels
+
+### Time Filters
+- `--changed-within TIME`: Find files changed within TIME (e.g., `24h`, `2d`, `1w`)
+- `--changed-before TIME`: Find files changed before TIME
+
+### Output Control
+- `-l` or `--list-details`: Show more details (similar to `ls -l`)
+- `-0` or `--print0`: Separate results with null characters (for piping to `xargs`)
+- `-c` or `--color always`: Always colorize output
+
+### Execution
+- `-x COMMAND` or `--exec COMMAND`: Execute a command for each search result
+  - Example: `fd -t f -e js -x wc -l` (count lines in all JavaScript files)
+
+### Common Usage Examples
+```bash
+# Find all JavaScript files
+fd -e js
+
+# Find all directories containing "config" in their name
+fd -t d config
+
+# Find all files modified in the last 24 hours
+fd --changed-within 24h
+
+# Find all markdown files and count their lines
+fd -e md -x wc -l
+
+# Find all empty directories
+fd -t d -e "^$"
+
+# Find all Python files and show details
+fd -e py -l
+```
+
+These flags make `fd` extremely versatile for quickly finding what you need in your filesystem. 
+
+## Addendum: Common Flags for the `rg` (Ripgrep) Command
+
+Ripgrep is a modern search tool that's significantly faster than grep. Here are the most useful flags you'll use regularly:
+
+### Search Control
+- `-i` or `--ignore-case`: Case insensitive search
+- `-s` or `--case-sensitive`: Force case sensitive search
+- `-w` or `--word-regexp`: Match whole words only
+- `-F` or `--fixed-strings`: Treat pattern as literal string, not regex (same as `rgf`)
+- `-e PATTERN`: Specify pattern (can use multiple times for OR search)
+
+### File Filtering
+- `-t TYPE` or `--type TYPE`: Only search files of TYPE (e.g., `-t js`, `-t py`)
+- `-T TYPE` or `--type-not TYPE`: Don't search files of TYPE
+- `-g GLOB` or `--glob GLOB`: Include/exclude files matching glob pattern
+- `--hidden`: Search hidden files and directories (same as `rgh`)
+- `--no-ignore`: Don't respect `.gitignore` files
+
+### Context Control
+- `-A NUM` or `--after-context NUM`: Show NUM lines after each match
+- `-B NUM` or `--before-context NUM`: Show NUM lines before each match
+- `-C NUM` or `--context NUM`: Show NUM lines before and after each match
+
+### Output Control
+- `-l` or `--files-with-matches`: Only show filenames with matches
+- `-c` or `--count`: Only show count of matching lines per file
+- `--no-filename`: Don't show filenames
+- `--no-line-number`: Don't show line numbers
+- `--no-heading`: Don't group matches by file
+- `-o` or `--only-matching`: Show only the matching part of the line
+
+### Common Usage Examples
+```bash
+# Case insensitive search for "error" in all files
+rg -i error
+
+# Search for "function" only in JavaScript files
+rg -t js function
+
+# Search for "TODO" with 2 lines of context
+rg -C 2 TODO
+
+# Find files containing "config" in their content
+rg -l config
+
+# Count occurrences of "import" in Python files
+rg -t py -c import
+
+# Search for multiple patterns (OR search)
+rg -e error -e warning -e critical
+
+# Search for whole word "test" (not "testing" or "contest")
+rg -w test
+
+# Search for literal string "app.get()" (not as regex)
+rg -F "app.get()"
+```
+
+These flags make Ripgrep an extremely powerful tool for searching through codebases and text files. 
