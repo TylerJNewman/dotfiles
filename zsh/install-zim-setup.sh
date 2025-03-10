@@ -532,7 +532,8 @@ zstyle ':fzf-tab:complete:(ls|cat|bat|vim|nvim|nano|less):*' fzf-preview 'bat --
 zstyle ':fzf-tab:*' fzf-flags '--height=50%'
 
 # Zoxide configuration with enhanced completion
-eval "$(zoxide init zsh --cmd cd)"
+# Note: Ongoing configuration is in zsh/configs/zoxide.zsh
+eval "$(zoxide init zsh)"
 
 # Aliases
 alias ls='ls --color=auto'
@@ -542,8 +543,8 @@ alias l='ls -CF'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias z='cd'      # Use enhanced zoxide as the default cd command
-alias zi='cd -i'  # Interactive selection with fzf
+alias cd="z"      # Replace cd with z for smart directory jumping
+alias zi="zoxide query -i --exclude \$PWD"  # Interactive selection with fzf
 
 # Initialize Starship prompt (must be at the end)
 eval "$(starship init zsh)"

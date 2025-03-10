@@ -25,11 +25,9 @@ fi
 # Initialize zoxide with zsh integration
 eval "$(zoxide init zsh)"
 
-# Aliases for zoxide
+# Core aliases for zoxide
 alias cd="z"      # Replace cd with z for smart directory jumping
-alias cdi="zi"    # Interactive selection with fzf
-alias j="z"       # Quick jump to directory using zoxide
-alias jj="zi"     # Interactive jump with fuzzy finder
+alias zi="zoxide query -i --exclude \$PWD"  # Interactive selection with fzf
 
 # Add current directory to zoxide database when changing directory
 function chpwd() {
@@ -57,7 +55,4 @@ function zp() {
   if [[ -n "$dir" ]]; then
     cd "$dir"
   fi
-}
-
-# Add custom 'zi' alias for interactive mode that excludes current directory
-alias zi="zoxide query -i --exclude \$PWD" 
+} 

@@ -44,7 +44,6 @@ Zoxide tracks your most frequently used directories and allows you to jump to th
 - `z project` - Jump to your most frequently used directory containing "project"
 - `zi` - Interactive selection with fzf
 - `zl` - List frequently visited directories
-- `zp` - Jump to a directory with fzf preview
 
 ### FZF Keybindings
 
