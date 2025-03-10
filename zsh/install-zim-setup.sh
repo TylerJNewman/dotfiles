@@ -536,10 +536,11 @@ zstyle ':fzf-tab:*' fzf-flags '--height=50%'
 eval "$(zoxide init zsh)"
 
 # Aliases
-alias ls='ls --color=auto'
-alias ll='ls -la'
-alias la='ls -A'
-alias l='ls -CF'
+# Modern file listing with eza
+alias ls="eza --icons"
+alias ll="eza -la --icons"
+alias la="eza -a --icons"
+alias l="eza -l --icons"
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'

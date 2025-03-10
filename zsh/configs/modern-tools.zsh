@@ -6,7 +6,7 @@
 
 # Enhanced eza (ls replacement) configuration
 if command -v eza &> /dev/null; then
-  # Additional eza aliases
+  # Specialized eza aliases (basic aliases are in aliases.zsh)
   alias lg="eza -la --group-directories-first --git --icons"  # List with git status
   alias llg="eza -l --group-directories-first --git --icons"  # List with git status (no hidden files)
   alias lss="eza -la --sort=size --icons"                     # Sort by file size

@@ -125,7 +125,7 @@ install_gh_extensions() {
 
 # Ask user which tool categories to install
 echo "Which tool categories would you like to install?"
-echo "1) Rust-based CLI replacements (bat, exa, fd, ripgrep, etc.)"
+echo "1) Rust-based CLI replacements (bat, eza, fd, ripgrep, etc.)"
 echo "2) Modern shell tools (fzf, zoxide, starship, etc.)"
 echo "3) AI development tools (GitHub Copilot CLI, etc.)"
 echo "4) Container tools (Docker, lazydocker, etc.)"
@@ -142,7 +142,7 @@ for choice in "${CHOICES[@]}"; do
   case $choice in
     1|7)
       echo -e "\n${BLUE}Installing Rust-based CLI replacements...${NC}"
-      install_packages bat exa fd ripgrep delta
+      install_packages bat eza fd ripgrep delta
       ;;
     2|7)
       echo -e "\n${BLUE}Installing Modern shell tools...${NC}"

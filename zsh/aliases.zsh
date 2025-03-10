@@ -22,11 +22,12 @@ alias j="jobs"
 
 # Modern CLI tools
 alias cat="bat"
-alias ls="eza --icons"
-alias l="eza -la --icons"
-alias ll="eza -la --icons"
-alias lt="eza -la --tree --level=2 --icons"
-alias llt="eza -lT --level=3 --icons"
+# Basic eza aliases (additional specialized aliases are in configs/modern-tools.zsh)
+alias ls="eza --icons"                      # Basic listing with icons
+alias l="eza -l --icons"                    # Long listing
+alias ll="eza -la --icons"                  # Long listing with hidden files
+alias lt="eza -la --tree --level=2 --icons" # Tree view (2 levels)
+alias llt="eza -lT --level=3 --icons"       # Tree view (3 levels)
 alias find="fd"
 alias grep="rg"
 
